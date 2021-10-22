@@ -1,0 +1,13 @@
+# PyCharm
+.idea
+
+# python venv
+.venv
+
+# vscode configuration
+.vscode
+
+# python cache (it does not work FFS?!)
+__pycache__/*.pyc
+*.pyc
+__pycache__

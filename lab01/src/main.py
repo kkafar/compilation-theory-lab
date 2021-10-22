@@ -1,12 +1,11 @@
 import sys
-from typing import TYPE_CHECKING
-import ply.lex as lex
 import scanner
 
-if __name__ == '__main__':
+DATA_PATH = 'data/input.txt'
 
+if __name__ == '__main__':
+    filename = sys.argv[1] if len(sys.argv) > 1 else DATA_PATH
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "input.txt"
         file = open(filename, "r")
     except IOError:
         print("Cannot open {0} file".format(filename))
@@ -21,4 +20,4 @@ if __name__ == '__main__':
         tok = lexer.token()
         if not tok: 
             break    # No more input
-        print("%d: %s(%s)" %(tok.lineno, tok.type, tok.value))
+        print("%d: %s('%s')" %(tok.lineno, tok.type, tok.value))
