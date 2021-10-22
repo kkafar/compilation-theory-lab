@@ -45,7 +45,7 @@ tokens = (
     "COMMENT",
     "DT_INTEGER",
     "DT_FLOAT",
-    "DT_STRING",
+    "DT_STRING"
 )
 
 t_PLUS              = r'\+'
@@ -90,14 +90,14 @@ t_ONES              = r'ones'
 t_PRINT             = r'print'
 t_ignore            = ' \t'
 
+def t_DT_FLOAT(t):
+    r'((\d+(\.\d*)?)|(\.\d+))'
+    t.value = float(t.value)
+    return t
+
 def t_DT_INTEGER(t):
     r'[-+]?[0-9]+'
     t.value = int(t.value)
-    return t
-
-def t_DT_FLOAT(t):
-    r'\d+(\.\d+)?([eE][+-]?\d+)?'
-    t.value = float(t.value)
     return t
 
 def t_DT_STRING(t):
