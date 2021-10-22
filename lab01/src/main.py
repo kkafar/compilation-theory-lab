@@ -1,11 +1,10 @@
 import sys
 import scanner
 
-DATA_PATH = '../data/input.txt'
+DATA_PATH = 'data/input.txt'
 
 if __name__ == '__main__':
-    
-    filename = sys.argv[1] if len(sys.argv) > 1 else "input.txt"
+    filename = sys.argv[1] if len(sys.argv) > 1 else DATA_PATH
     try:
         file = open(filename, "r")
     except IOError:
