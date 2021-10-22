@@ -91,12 +91,12 @@ t_PRINT             = r'print'
 t_ignore            = ' \t'
 
 def t_DT_FLOAT(t):
-    r'((\d+(\.\d*)?)|(\.\d+))'
+    r'[+-]?((\d+(\.\d*)?)|(\.\d+))((e|E)[+-]?\d+)?'
     t.value = float(t.value)
     return t
 
 def t_DT_INTEGER(t):
-    r'[-+]?[0-9]+'
+    r'[-+]?\d+((e|E)[+-]?\d+)?'
     t.value = int(t.value)
     return t
 
