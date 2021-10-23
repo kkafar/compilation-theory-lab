@@ -1,6 +1,20 @@
 import ply.lex as lex
 
 
+reserved = {
+    'if'      : 'IF',
+    'else'    : 'ELSE',
+    'for'     : 'FOR',
+    'while'   : 'WHILE',
+    'break'   : 'BREAK',
+    'continue': 'CONTINUE',
+    'return'  : 'RETURN',
+    'eye'     : 'EYE',
+    'zeros'   : 'ZEROS',
+    'ones'    : 'ONES',
+    'print'   : 'PRINT'
+}
+
 tokens = (
     'ID',
     'MATRIX_PLUS',
@@ -17,22 +31,11 @@ tokens = (
     'RELOP_GE',
     'RELOP_NE',
     'RELOP_EQ',
-    'IF',
-    "ELSE",
-    'FOR',
-    "WHILE",
-    "BREAK",
-    "CONTINUE",
-    "RETURN",
-    "EYE",
-    "ZEROS",
-    "ONES",
-    "PRINT",
     "COMMENT",
     "DT_INTEGER",
     "DT_FLOAT",
     "DT_STRING"
-)
+) + tuple(reserved.values())
 
 t_MATRIX_PLUS       = r'\.\+'
 t_MATRIX_SUB        = r'\.-'
@@ -48,17 +51,6 @@ t_RELOP_GE          = r'>='
 t_RELOP_LE          = r'<='
 t_RELOP_NE          = r'!='
 t_RELOP_EQ          = r'=='
-t_IF                = r'if'
-t_ELSE              = r'else'
-t_FOR               = r'for'
-t_WHILE             = r'while'
-t_BREAK             = r'break'
-t_CONTINUE          = r'continue'
-t_RETURN            = r'return'
-t_EYE               = r'eye'
-t_ZEROS             = r'zeros'
-t_ONES              = r'ones'
-t_PRINT             = r'print'
 
 t_ignore            = ' \t'
 
@@ -96,6 +88,5 @@ def t_error(t):
     print(f"{t.value}")
     t.lexer.skip(1)
 
-# TRZEBA DODAC OBSLUGE KOMENTARZY
 
 lexer = lex.lex()
