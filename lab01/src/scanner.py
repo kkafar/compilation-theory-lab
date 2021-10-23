@@ -68,7 +68,7 @@ def t_DT_INTEGER(t):
 
 def t_DT_STRING(t):
     r'((".*")|(\'.*\'))'
-    t.value = str(t.value)
+    t.value = str(t.value)[1:-1]
     return t
     
 def t_ID(t):
@@ -85,7 +85,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
     
 def t_error(t):
-    print(f"{t.value}")
+    print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
 
