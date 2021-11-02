@@ -73,7 +73,7 @@ def t_DT_STRING(t):
     
 def t_ID(t):
     r'[a-zA-Z_][\w\d_]*'
-    t.value = str(t.value)
+    t.type = reserved.get(t.value,'ID')
     return t
 
 def t_COMMENT(t):
