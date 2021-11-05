@@ -1,0 +1,122 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BREAK
+    COMMENT
+    CONTINUE
+    DIV_ASSIGN
+    DT_FLOAT
+    DT_INTEGER
+    DT_STRING
+    ELSE
+    EYE
+    FOR
+    IF
+    MUL_ASSIGN
+    ONES
+    PLUS_ASSIGN
+    PRINT
+    RETURN
+    SUB_ASSIGN
+    WHILE
+    ZEROS
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> expressions_opt
+Rule 2     expressions_opt -> expressions
+Rule 3     expressions_opt -> <empty>
+Rule 4     expressions -> expressions expression
+Rule 5     expressions -> expression
+Rule 6     expression -> expression_binop
+Rule 7     expression -> expression_relop
+Rule 8     expression -> expression_unary
+Rule 9     expression -> matrix_init
+Rule 10    expression -> expression + expression
+Rule 11    expression -> expression - expression
+Rule 12    expression -> expression * expression
+Rule 13    expression -> expression / expression
+Rule 14    expression -> expression MATRIX_PLUS expression
+Rule 15    expression -> expression MATRIX_SUB expression
+Rule 16    expression -> expression MATRIX_MUL expression
+Rule 17    expression -> expression MATRIX_DIV expression
+Rule 18    expression -> expression RELOP_EQ expression
+Rule 19    expression -> expression RELOP_GT expression
+Rule 20    expression -> expression RELOP_LT expression
+Rule 21    expression -> expression RELOP_GE expression
+Rule 22    expression -> expression RELOP_LE expression
+Rule 23    expression -> expression RELOP_NE expression
+Rule 24    expression -> - expression
+Rule 25    expression -> expression '
+Rule 26    instruction -> ID = [ vectors ]
+Rule 27    vectors -> vector
+Rule 28    vectors -> vectors , vector
+Rule 29    vector -> [ numbers ]
+Rule 30    numbers -> numbers , number
+Rule 31    numbers -> number
+Rule 32    number -> INTEGER
+Rule 33    number -> FLOAT
+
+Terminals, with rules where they appear
+
+'                    : 25
+*                    : 12
++                    : 10
+,                    : 28 30
+-                    : 11 24
+/                    : 13
+=                    : 26
+BREAK                : 
+COMMENT              : 
+CONTINUE             : 
+DIV_ASSIGN           : 
+DT_FLOAT             : 
+DT_INTEGER           : 
+DT_STRING            : 
+ELSE                 : 
+EYE                  : 
+FOR                  : 
+ID                   : 26
+IF                   : 
+MATRIX_DIV           : 17
+MATRIX_MUL           : 16
+MATRIX_PLUS          : 14
+MATRIX_SUB           : 15
+MUL_ASSIGN           : 
+ONES                 : 
+PLUS_ASSIGN          : 
+PRINT                : 
+RELOP_EQ             : 18
+RELOP_GE             : 21
+RELOP_GT             : 19
+RELOP_LE             : 22
+RELOP_LT             : 20
+RELOP_NE             : 23
+RETURN               : 
+SUB_ASSIGN           : 
+WHILE                : 
+ZEROS                : 
+[                    : 26 29
+]                    : 26 29
+error                : 
+
+Nonterminals, with rules where they appear
+
+FLOAT                : 33
+INTEGER              : 32
+expression           : 4 5 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 25
+expression_binop     : 6
+expression_relop     : 7
+expression_unary     : 8
+expressions          : 2 4
+expressions_opt      : 1
+instruction          : 
+matrix_init          : 9
+number               : 30 31
+numbers              : 29 30
+program              : 0
+vector               : 27 28
+vectors              : 26 28
+
