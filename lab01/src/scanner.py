@@ -57,7 +57,7 @@ t_ignore            = ' \t'
 literals = "+-*/()[]{},;:=\'"
 
 def t_DT_FLOAT(t):
-    r'[+-]?((\d+(\.\d*)?)|(\.\d+))((e|E)[+-]?\d+)?'
+    r'[+-]?((((\d+\.(\d*)?)|(\.\d+))([eE][+-]?\d+)?)|(\d+[eE][+-]?\d+))'
     t.value = float(t.value)
     return t
 
@@ -68,12 +68,12 @@ def t_DT_INTEGER(t):
 
 def t_DT_STRING(t):
     r'((".*")|(\'.*\'))'
-    t.value = str(t.value)[1:-1]
+    t.value = t.value[1:-1]
     return t
     
 def t_ID(t):
     r'[a-zA-Z_][\w\d_]*'
-    t.value = str(t.value)
+    t.type = reserved.get(t.value,'ID')
     return t
 
 def t_COMMENT(t):
@@ -85,7 +85,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
     
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
+    print(f"Illegal character '{t.value[0]}' at line {t.lexer.lineno}")
     t.lexer.skip(1)
 
 
