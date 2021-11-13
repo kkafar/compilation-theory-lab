@@ -5,118 +5,3225 @@ Unused terminals:
     BREAK
     COMMENT
     CONTINUE
-    DIV_ASSIGN
-    DT_FLOAT
-    DT_INTEGER
-    DT_STRING
     ELSE
-    EYE
     FOR
     IF
-    MUL_ASSIGN
-    ONES
-    PLUS_ASSIGN
     PRINT
     RETURN
-    SUB_ASSIGN
     WHILE
-    ZEROS
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> expressions_opt
-Rule 2     expressions_opt -> expressions
-Rule 3     expressions_opt -> <empty>
-Rule 4     expressions -> expressions expression
-Rule 5     expressions -> expression
-Rule 6     expression -> expression_binop
-Rule 7     expression -> expression_relop
-Rule 8     expression -> expression_unary
-Rule 9     expression -> matrix_init
-Rule 10    expression -> expression + expression
-Rule 11    expression -> expression - expression
-Rule 12    expression -> expression * expression
-Rule 13    expression -> expression / expression
-Rule 14    expression -> expression MATRIX_PLUS expression
-Rule 15    expression -> expression MATRIX_SUB expression
-Rule 16    expression -> expression MATRIX_MUL expression
-Rule 17    expression -> expression MATRIX_DIV expression
-Rule 18    expression -> expression RELOP_EQ expression
-Rule 19    expression -> expression RELOP_GT expression
-Rule 20    expression -> expression RELOP_LT expression
-Rule 21    expression -> expression RELOP_GE expression
-Rule 22    expression -> expression RELOP_LE expression
-Rule 23    expression -> expression RELOP_NE expression
-Rule 24    expression -> - expression
-Rule 25    expression -> expression '
-Rule 26    instruction -> ID = [ vectors ]
-Rule 27    vectors -> vector
-Rule 28    vectors -> vectors , vector
-Rule 29    vector -> [ numbers ]
-Rule 30    numbers -> numbers , number
-Rule 31    numbers -> number
-Rule 32    number -> INTEGER
-Rule 33    number -> FLOAT
+Rule 1     program -> instructions_opt
+Rule 2     instructions_opt -> instructions
+Rule 3     instructions_opt -> <empty>
+Rule 4     instructions -> instructions instruction
+Rule 5     instructions -> instruction
+Rule 6     instruction -> assignment ;
+Rule 7     assignment -> assign_id = expression
+Rule 8     assignment -> assign_id MUL_ASSIGN expression
+Rule 9     assignment -> assign_id DIV_ASSIGN expression
+Rule 10    assignment -> assign_id PLUS_ASSIGN expression
+Rule 11    assignment -> assign_id SUB_ASSIGN expression
+Rule 12    assign_id -> ID
+Rule 13    assign_id -> ID vector
+Rule 14    expression -> expression_binop
+Rule 15    expression -> expression_relop
+Rule 16    expression -> expression_unary
+Rule 17    expression -> matrix_funcs
+Rule 18    expression -> constant
+Rule 19    expression -> ID
+Rule 20    expression -> matrix
+Rule 21    expression -> ( expression )
+Rule 22    expression_binop -> expression + expression
+Rule 23    expression_binop -> expression - expression
+Rule 24    expression_binop -> expression * expression
+Rule 25    expression_binop -> expression / expression
+Rule 26    expression_binop -> expression MATRIX_PLUS expression
+Rule 27    expression_binop -> expression MATRIX_SUB expression
+Rule 28    expression_binop -> expression MATRIX_MUL expression
+Rule 29    expression_binop -> expression MATRIX_DIV expression
+Rule 30    expression_relop -> expression RELOP_EQ expression
+Rule 31    expression_relop -> expression RELOP_GT expression
+Rule 32    expression_relop -> expression RELOP_LT expression
+Rule 33    expression_relop -> expression RELOP_GE expression
+Rule 34    expression_relop -> expression RELOP_LE expression
+Rule 35    expression_relop -> expression RELOP_NE expression
+Rule 36    expression_unary -> - expression
+Rule 37    expression_unary -> expression '
+Rule 38    matrix_funcs -> ZEROS ( DT_INTEGER )
+Rule 39    matrix_funcs -> ONES ( DT_INTEGER )
+Rule 40    matrix_funcs -> EYE ( DT_INTEGER )
+Rule 41    constant -> DT_STRING
+Rule 42    constant -> number
+Rule 43    matrix -> [ vectors ]
+Rule 44    vectors -> vector
+Rule 45    vectors -> vectors , vector
+Rule 46    vector -> [ numbers ]
+Rule 47    numbers -> numbers , number
+Rule 48    numbers -> number
+Rule 49    numbers -> <empty>
+Rule 50    number -> DT_INTEGER
+Rule 51    number -> DT_FLOAT
 
 Terminals, with rules where they appear
 
-'                    : 25
-*                    : 12
-+                    : 10
-,                    : 28 30
--                    : 11 24
-/                    : 13
-=                    : 26
+'                    : 37
+(                    : 21 38 39 40
+)                    : 21 38 39 40
+*                    : 24
++                    : 22
+,                    : 45 47
+-                    : 23 36
+/                    : 25
+;                    : 6
+=                    : 7
 BREAK                : 
 COMMENT              : 
 CONTINUE             : 
-DIV_ASSIGN           : 
-DT_FLOAT             : 
-DT_INTEGER           : 
-DT_STRING            : 
+DIV_ASSIGN           : 9
+DT_FLOAT             : 51
+DT_INTEGER           : 38 39 40 50
+DT_STRING            : 41
 ELSE                 : 
-EYE                  : 
+EYE                  : 40
 FOR                  : 
-ID                   : 26
+ID                   : 12 13 19
 IF                   : 
-MATRIX_DIV           : 17
-MATRIX_MUL           : 16
-MATRIX_PLUS          : 14
-MATRIX_SUB           : 15
-MUL_ASSIGN           : 
-ONES                 : 
-PLUS_ASSIGN          : 
+MATRIX_DIV           : 29
+MATRIX_MUL           : 28
+MATRIX_PLUS          : 26
+MATRIX_SUB           : 27
+MUL_ASSIGN           : 8
+ONES                 : 39
+PLUS_ASSIGN          : 10
 PRINT                : 
-RELOP_EQ             : 18
-RELOP_GE             : 21
-RELOP_GT             : 19
-RELOP_LE             : 22
-RELOP_LT             : 20
-RELOP_NE             : 23
+RELOP_EQ             : 30
+RELOP_GE             : 33
+RELOP_GT             : 31
+RELOP_LE             : 34
+RELOP_LT             : 32
+RELOP_NE             : 35
 RETURN               : 
-SUB_ASSIGN           : 
+SUB_ASSIGN           : 11
 WHILE                : 
-ZEROS                : 
-[                    : 26 29
-]                    : 26 29
+ZEROS                : 38
+[                    : 43 46
+]                    : 43 46
 error                : 
 
 Nonterminals, with rules where they appear
 
-FLOAT                : 33
-INTEGER              : 32
-expression           : 4 5 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 25
-expression_binop     : 6
-expression_relop     : 7
-expression_unary     : 8
-expressions          : 2 4
-expressions_opt      : 1
-instruction          : 
-matrix_init          : 9
-number               : 30 31
-numbers              : 29 30
+assign_id            : 7 8 9 10 11
+assignment           : 6
+constant             : 18
+expression           : 7 8 9 10 11 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 37
+expression_binop     : 14
+expression_relop     : 15
+expression_unary     : 16
+instruction          : 4 5
+instructions         : 2 4
+instructions_opt     : 1
+matrix               : 20
+matrix_funcs         : 17
+number               : 42 47 48
+numbers              : 46 47
 program              : 0
-vector               : 27 28
-vectors              : 26 28
+vector               : 13 44 45
+vectors              : 43 45
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . instructions_opt
+    (2) instructions_opt -> . instructions
+    (3) instructions_opt -> .
+    (4) instructions -> . instructions instruction
+    (5) instructions -> . instruction
+    (6) instruction -> . assignment ;
+    (7) assignment -> . assign_id = expression
+    (8) assignment -> . assign_id MUL_ASSIGN expression
+    (9) assignment -> . assign_id DIV_ASSIGN expression
+    (10) assignment -> . assign_id PLUS_ASSIGN expression
+    (11) assignment -> . assign_id SUB_ASSIGN expression
+    (12) assign_id -> . ID
+    (13) assign_id -> . ID vector
+
+    $end            reduce using rule 3 (instructions_opt -> .)
+    ID              shift and go to state 7
+
+    program                        shift and go to state 1
+    instructions_opt               shift and go to state 2
+    instructions                   shift and go to state 3
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    assign_id                      shift and go to state 6
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> instructions_opt .
+
+    $end            reduce using rule 1 (program -> instructions_opt .)
+
+
+state 3
+
+    (2) instructions_opt -> instructions .
+    (4) instructions -> instructions . instruction
+    (6) instruction -> . assignment ;
+    (7) assignment -> . assign_id = expression
+    (8) assignment -> . assign_id MUL_ASSIGN expression
+    (9) assignment -> . assign_id DIV_ASSIGN expression
+    (10) assignment -> . assign_id PLUS_ASSIGN expression
+    (11) assignment -> . assign_id SUB_ASSIGN expression
+    (12) assign_id -> . ID
+    (13) assign_id -> . ID vector
+
+    $end            reduce using rule 2 (instructions_opt -> instructions .)
+    ID              shift and go to state 7
+
+    instruction                    shift and go to state 8
+    assignment                     shift and go to state 5
+    assign_id                      shift and go to state 6
+
+state 4
+
+    (5) instructions -> instruction .
+
+    ID              reduce using rule 5 (instructions -> instruction .)
+    $end            reduce using rule 5 (instructions -> instruction .)
+
+
+state 5
+
+    (6) instruction -> assignment . ;
+
+    ;               shift and go to state 9
+
+
+state 6
+
+    (7) assignment -> assign_id . = expression
+    (8) assignment -> assign_id . MUL_ASSIGN expression
+    (9) assignment -> assign_id . DIV_ASSIGN expression
+    (10) assignment -> assign_id . PLUS_ASSIGN expression
+    (11) assignment -> assign_id . SUB_ASSIGN expression
+
+    =               shift and go to state 10
+    MUL_ASSIGN      shift and go to state 11
+    DIV_ASSIGN      shift and go to state 12
+    PLUS_ASSIGN     shift and go to state 13
+    SUB_ASSIGN      shift and go to state 14
+
+
+state 7
+
+    (12) assign_id -> ID .
+    (13) assign_id -> ID . vector
+    (46) vector -> . [ numbers ]
+
+    =               reduce using rule 12 (assign_id -> ID .)
+    MUL_ASSIGN      reduce using rule 12 (assign_id -> ID .)
+    DIV_ASSIGN      reduce using rule 12 (assign_id -> ID .)
+    PLUS_ASSIGN     reduce using rule 12 (assign_id -> ID .)
+    SUB_ASSIGN      reduce using rule 12 (assign_id -> ID .)
+    [               shift and go to state 16
+
+    vector                         shift and go to state 15
+
+state 8
+
+    (4) instructions -> instructions instruction .
+
+    ID              reduce using rule 4 (instructions -> instructions instruction .)
+    $end            reduce using rule 4 (instructions -> instructions instruction .)
+
+
+state 9
+
+    (6) instruction -> assignment ; .
+
+    ID              reduce using rule 6 (instruction -> assignment ; .)
+    $end            reduce using rule 6 (instruction -> assignment ; .)
+
+
+state 10
+
+    (7) assignment -> assign_id = . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 17
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 11
+
+    (8) assignment -> assign_id MUL_ASSIGN . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 35
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 12
+
+    (9) assignment -> assign_id DIV_ASSIGN . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 36
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 13
+
+    (10) assignment -> assign_id PLUS_ASSIGN . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 37
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 14
+
+    (11) assignment -> assign_id SUB_ASSIGN . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 38
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 15
+
+    (13) assign_id -> ID vector .
+
+    =               reduce using rule 13 (assign_id -> ID vector .)
+    MUL_ASSIGN      reduce using rule 13 (assign_id -> ID vector .)
+    DIV_ASSIGN      reduce using rule 13 (assign_id -> ID vector .)
+    PLUS_ASSIGN     reduce using rule 13 (assign_id -> ID vector .)
+    SUB_ASSIGN      reduce using rule 13 (assign_id -> ID vector .)
+
+
+state 16
+
+    (46) vector -> [ . numbers ]
+    (47) numbers -> . numbers , number
+    (48) numbers -> . number
+    (49) numbers -> .
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ]               reduce using rule 49 (numbers -> .)
+    ,               reduce using rule 49 (numbers -> .)
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    numbers                        shift and go to state 39
+    number                         shift and go to state 40
+
+state 17
+
+    (7) assignment -> assign_id = expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    ;               reduce using rule 7 (assignment -> assign_id = expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 18
+
+    (14) expression -> expression_binop .
+
+    +               reduce using rule 14 (expression -> expression_binop .)
+    -               reduce using rule 14 (expression -> expression_binop .)
+    *               reduce using rule 14 (expression -> expression_binop .)
+    /               reduce using rule 14 (expression -> expression_binop .)
+    MATRIX_PLUS     reduce using rule 14 (expression -> expression_binop .)
+    MATRIX_SUB      reduce using rule 14 (expression -> expression_binop .)
+    MATRIX_MUL      reduce using rule 14 (expression -> expression_binop .)
+    MATRIX_DIV      reduce using rule 14 (expression -> expression_binop .)
+    RELOP_EQ        reduce using rule 14 (expression -> expression_binop .)
+    RELOP_GT        reduce using rule 14 (expression -> expression_binop .)
+    RELOP_LT        reduce using rule 14 (expression -> expression_binop .)
+    RELOP_GE        reduce using rule 14 (expression -> expression_binop .)
+    RELOP_LE        reduce using rule 14 (expression -> expression_binop .)
+    RELOP_NE        reduce using rule 14 (expression -> expression_binop .)
+    '               reduce using rule 14 (expression -> expression_binop .)
+    ;               reduce using rule 14 (expression -> expression_binop .)
+    )               reduce using rule 14 (expression -> expression_binop .)
+
+
+state 19
+
+    (15) expression -> expression_relop .
+
+    +               reduce using rule 15 (expression -> expression_relop .)
+    -               reduce using rule 15 (expression -> expression_relop .)
+    *               reduce using rule 15 (expression -> expression_relop .)
+    /               reduce using rule 15 (expression -> expression_relop .)
+    MATRIX_PLUS     reduce using rule 15 (expression -> expression_relop .)
+    MATRIX_SUB      reduce using rule 15 (expression -> expression_relop .)
+    MATRIX_MUL      reduce using rule 15 (expression -> expression_relop .)
+    MATRIX_DIV      reduce using rule 15 (expression -> expression_relop .)
+    RELOP_EQ        reduce using rule 15 (expression -> expression_relop .)
+    RELOP_GT        reduce using rule 15 (expression -> expression_relop .)
+    RELOP_LT        reduce using rule 15 (expression -> expression_relop .)
+    RELOP_GE        reduce using rule 15 (expression -> expression_relop .)
+    RELOP_LE        reduce using rule 15 (expression -> expression_relop .)
+    RELOP_NE        reduce using rule 15 (expression -> expression_relop .)
+    '               reduce using rule 15 (expression -> expression_relop .)
+    ;               reduce using rule 15 (expression -> expression_relop .)
+    )               reduce using rule 15 (expression -> expression_relop .)
+
+
+state 20
+
+    (16) expression -> expression_unary .
+
+    +               reduce using rule 16 (expression -> expression_unary .)
+    -               reduce using rule 16 (expression -> expression_unary .)
+    *               reduce using rule 16 (expression -> expression_unary .)
+    /               reduce using rule 16 (expression -> expression_unary .)
+    MATRIX_PLUS     reduce using rule 16 (expression -> expression_unary .)
+    MATRIX_SUB      reduce using rule 16 (expression -> expression_unary .)
+    MATRIX_MUL      reduce using rule 16 (expression -> expression_unary .)
+    MATRIX_DIV      reduce using rule 16 (expression -> expression_unary .)
+    RELOP_EQ        reduce using rule 16 (expression -> expression_unary .)
+    RELOP_GT        reduce using rule 16 (expression -> expression_unary .)
+    RELOP_LT        reduce using rule 16 (expression -> expression_unary .)
+    RELOP_GE        reduce using rule 16 (expression -> expression_unary .)
+    RELOP_LE        reduce using rule 16 (expression -> expression_unary .)
+    RELOP_NE        reduce using rule 16 (expression -> expression_unary .)
+    '               reduce using rule 16 (expression -> expression_unary .)
+    ;               reduce using rule 16 (expression -> expression_unary .)
+    )               reduce using rule 16 (expression -> expression_unary .)
+
+
+state 21
+
+    (17) expression -> matrix_funcs .
+
+    +               reduce using rule 17 (expression -> matrix_funcs .)
+    -               reduce using rule 17 (expression -> matrix_funcs .)
+    *               reduce using rule 17 (expression -> matrix_funcs .)
+    /               reduce using rule 17 (expression -> matrix_funcs .)
+    MATRIX_PLUS     reduce using rule 17 (expression -> matrix_funcs .)
+    MATRIX_SUB      reduce using rule 17 (expression -> matrix_funcs .)
+    MATRIX_MUL      reduce using rule 17 (expression -> matrix_funcs .)
+    MATRIX_DIV      reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_EQ        reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_GT        reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_LT        reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_GE        reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_LE        reduce using rule 17 (expression -> matrix_funcs .)
+    RELOP_NE        reduce using rule 17 (expression -> matrix_funcs .)
+    '               reduce using rule 17 (expression -> matrix_funcs .)
+    ;               reduce using rule 17 (expression -> matrix_funcs .)
+    )               reduce using rule 17 (expression -> matrix_funcs .)
+
+
+state 22
+
+    (18) expression -> constant .
+
+    +               reduce using rule 18 (expression -> constant .)
+    -               reduce using rule 18 (expression -> constant .)
+    *               reduce using rule 18 (expression -> constant .)
+    /               reduce using rule 18 (expression -> constant .)
+    MATRIX_PLUS     reduce using rule 18 (expression -> constant .)
+    MATRIX_SUB      reduce using rule 18 (expression -> constant .)
+    MATRIX_MUL      reduce using rule 18 (expression -> constant .)
+    MATRIX_DIV      reduce using rule 18 (expression -> constant .)
+    RELOP_EQ        reduce using rule 18 (expression -> constant .)
+    RELOP_GT        reduce using rule 18 (expression -> constant .)
+    RELOP_LT        reduce using rule 18 (expression -> constant .)
+    RELOP_GE        reduce using rule 18 (expression -> constant .)
+    RELOP_LE        reduce using rule 18 (expression -> constant .)
+    RELOP_NE        reduce using rule 18 (expression -> constant .)
+    '               reduce using rule 18 (expression -> constant .)
+    ;               reduce using rule 18 (expression -> constant .)
+    )               reduce using rule 18 (expression -> constant .)
+
+
+state 23
+
+    (19) expression -> ID .
+
+    +               reduce using rule 19 (expression -> ID .)
+    -               reduce using rule 19 (expression -> ID .)
+    *               reduce using rule 19 (expression -> ID .)
+    /               reduce using rule 19 (expression -> ID .)
+    MATRIX_PLUS     reduce using rule 19 (expression -> ID .)
+    MATRIX_SUB      reduce using rule 19 (expression -> ID .)
+    MATRIX_MUL      reduce using rule 19 (expression -> ID .)
+    MATRIX_DIV      reduce using rule 19 (expression -> ID .)
+    RELOP_EQ        reduce using rule 19 (expression -> ID .)
+    RELOP_GT        reduce using rule 19 (expression -> ID .)
+    RELOP_LT        reduce using rule 19 (expression -> ID .)
+    RELOP_GE        reduce using rule 19 (expression -> ID .)
+    RELOP_LE        reduce using rule 19 (expression -> ID .)
+    RELOP_NE        reduce using rule 19 (expression -> ID .)
+    '               reduce using rule 19 (expression -> ID .)
+    ;               reduce using rule 19 (expression -> ID .)
+    )               reduce using rule 19 (expression -> ID .)
+
+
+state 24
+
+    (20) expression -> matrix .
+
+    +               reduce using rule 20 (expression -> matrix .)
+    -               reduce using rule 20 (expression -> matrix .)
+    *               reduce using rule 20 (expression -> matrix .)
+    /               reduce using rule 20 (expression -> matrix .)
+    MATRIX_PLUS     reduce using rule 20 (expression -> matrix .)
+    MATRIX_SUB      reduce using rule 20 (expression -> matrix .)
+    MATRIX_MUL      reduce using rule 20 (expression -> matrix .)
+    MATRIX_DIV      reduce using rule 20 (expression -> matrix .)
+    RELOP_EQ        reduce using rule 20 (expression -> matrix .)
+    RELOP_GT        reduce using rule 20 (expression -> matrix .)
+    RELOP_LT        reduce using rule 20 (expression -> matrix .)
+    RELOP_GE        reduce using rule 20 (expression -> matrix .)
+    RELOP_LE        reduce using rule 20 (expression -> matrix .)
+    RELOP_NE        reduce using rule 20 (expression -> matrix .)
+    '               reduce using rule 20 (expression -> matrix .)
+    ;               reduce using rule 20 (expression -> matrix .)
+    )               reduce using rule 20 (expression -> matrix .)
+
+
+state 25
+
+    (21) expression -> ( . expression )
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 56
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 26
+
+    (36) expression_unary -> - . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 57
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 27
+
+    (38) matrix_funcs -> ZEROS . ( DT_INTEGER )
+
+    (               shift and go to state 58
+
+
+state 28
+
+    (50) number -> DT_INTEGER .
+
+    +               reduce using rule 50 (number -> DT_INTEGER .)
+    -               reduce using rule 50 (number -> DT_INTEGER .)
+    *               reduce using rule 50 (number -> DT_INTEGER .)
+    /               reduce using rule 50 (number -> DT_INTEGER .)
+    MATRIX_PLUS     reduce using rule 50 (number -> DT_INTEGER .)
+    MATRIX_SUB      reduce using rule 50 (number -> DT_INTEGER .)
+    MATRIX_MUL      reduce using rule 50 (number -> DT_INTEGER .)
+    MATRIX_DIV      reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_EQ        reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_GT        reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_LT        reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_GE        reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_LE        reduce using rule 50 (number -> DT_INTEGER .)
+    RELOP_NE        reduce using rule 50 (number -> DT_INTEGER .)
+    '               reduce using rule 50 (number -> DT_INTEGER .)
+    ;               reduce using rule 50 (number -> DT_INTEGER .)
+    ]               reduce using rule 50 (number -> DT_INTEGER .)
+    ,               reduce using rule 50 (number -> DT_INTEGER .)
+    )               reduce using rule 50 (number -> DT_INTEGER .)
+
+
+state 29
+
+    (39) matrix_funcs -> ONES . ( DT_INTEGER )
+
+    (               shift and go to state 59
+
+
+state 30
+
+    (40) matrix_funcs -> EYE . ( DT_INTEGER )
+
+    (               shift and go to state 60
+
+
+state 31
+
+    (41) constant -> DT_STRING .
+
+    +               reduce using rule 41 (constant -> DT_STRING .)
+    -               reduce using rule 41 (constant -> DT_STRING .)
+    *               reduce using rule 41 (constant -> DT_STRING .)
+    /               reduce using rule 41 (constant -> DT_STRING .)
+    MATRIX_PLUS     reduce using rule 41 (constant -> DT_STRING .)
+    MATRIX_SUB      reduce using rule 41 (constant -> DT_STRING .)
+    MATRIX_MUL      reduce using rule 41 (constant -> DT_STRING .)
+    MATRIX_DIV      reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_EQ        reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_GT        reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_LT        reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_GE        reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_LE        reduce using rule 41 (constant -> DT_STRING .)
+    RELOP_NE        reduce using rule 41 (constant -> DT_STRING .)
+    '               reduce using rule 41 (constant -> DT_STRING .)
+    ;               reduce using rule 41 (constant -> DT_STRING .)
+    )               reduce using rule 41 (constant -> DT_STRING .)
+
+
+state 32
+
+    (42) constant -> number .
+
+    +               reduce using rule 42 (constant -> number .)
+    -               reduce using rule 42 (constant -> number .)
+    *               reduce using rule 42 (constant -> number .)
+    /               reduce using rule 42 (constant -> number .)
+    MATRIX_PLUS     reduce using rule 42 (constant -> number .)
+    MATRIX_SUB      reduce using rule 42 (constant -> number .)
+    MATRIX_MUL      reduce using rule 42 (constant -> number .)
+    MATRIX_DIV      reduce using rule 42 (constant -> number .)
+    RELOP_EQ        reduce using rule 42 (constant -> number .)
+    RELOP_GT        reduce using rule 42 (constant -> number .)
+    RELOP_LT        reduce using rule 42 (constant -> number .)
+    RELOP_GE        reduce using rule 42 (constant -> number .)
+    RELOP_LE        reduce using rule 42 (constant -> number .)
+    RELOP_NE        reduce using rule 42 (constant -> number .)
+    '               reduce using rule 42 (constant -> number .)
+    ;               reduce using rule 42 (constant -> number .)
+    )               reduce using rule 42 (constant -> number .)
+
+
+state 33
+
+    (43) matrix -> [ . vectors ]
+    (44) vectors -> . vector
+    (45) vectors -> . vectors , vector
+    (46) vector -> . [ numbers ]
+
+    [               shift and go to state 16
+
+    vectors                        shift and go to state 61
+    vector                         shift and go to state 62
+
+state 34
+
+    (51) number -> DT_FLOAT .
+
+    +               reduce using rule 51 (number -> DT_FLOAT .)
+    -               reduce using rule 51 (number -> DT_FLOAT .)
+    *               reduce using rule 51 (number -> DT_FLOAT .)
+    /               reduce using rule 51 (number -> DT_FLOAT .)
+    MATRIX_PLUS     reduce using rule 51 (number -> DT_FLOAT .)
+    MATRIX_SUB      reduce using rule 51 (number -> DT_FLOAT .)
+    MATRIX_MUL      reduce using rule 51 (number -> DT_FLOAT .)
+    MATRIX_DIV      reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_EQ        reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_GT        reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_LT        reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_GE        reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_LE        reduce using rule 51 (number -> DT_FLOAT .)
+    RELOP_NE        reduce using rule 51 (number -> DT_FLOAT .)
+    '               reduce using rule 51 (number -> DT_FLOAT .)
+    ;               reduce using rule 51 (number -> DT_FLOAT .)
+    ]               reduce using rule 51 (number -> DT_FLOAT .)
+    ,               reduce using rule 51 (number -> DT_FLOAT .)
+    )               reduce using rule 51 (number -> DT_FLOAT .)
+
+
+state 35
+
+    (8) assignment -> assign_id MUL_ASSIGN expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    ;               reduce using rule 8 (assignment -> assign_id MUL_ASSIGN expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 36
+
+    (9) assignment -> assign_id DIV_ASSIGN expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    ;               reduce using rule 9 (assignment -> assign_id DIV_ASSIGN expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 37
+
+    (10) assignment -> assign_id PLUS_ASSIGN expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    ;               reduce using rule 10 (assignment -> assign_id PLUS_ASSIGN expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 38
+
+    (11) assignment -> assign_id SUB_ASSIGN expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    ;               reduce using rule 11 (assignment -> assign_id SUB_ASSIGN expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 39
+
+    (46) vector -> [ numbers . ]
+    (47) numbers -> numbers . , number
+
+    ]               shift and go to state 63
+    ,               shift and go to state 64
+
+
+state 40
+
+    (48) numbers -> number .
+
+    ]               reduce using rule 48 (numbers -> number .)
+    ,               reduce using rule 48 (numbers -> number .)
+
+
+state 41
+
+    (22) expression_binop -> expression + . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 65
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 42
+
+    (23) expression_binop -> expression - . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 66
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 43
+
+    (24) expression_binop -> expression * . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 67
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 44
+
+    (25) expression_binop -> expression / . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 68
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 45
+
+    (26) expression_binop -> expression MATRIX_PLUS . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 69
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 46
+
+    (27) expression_binop -> expression MATRIX_SUB . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 70
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 47
+
+    (28) expression_binop -> expression MATRIX_MUL . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 71
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 48
+
+    (29) expression_binop -> expression MATRIX_DIV . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 72
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 49
+
+    (30) expression_relop -> expression RELOP_EQ . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 73
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 50
+
+    (31) expression_relop -> expression RELOP_GT . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 74
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 51
+
+    (32) expression_relop -> expression RELOP_LT . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 75
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 52
+
+    (33) expression_relop -> expression RELOP_GE . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 76
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 53
+
+    (34) expression_relop -> expression RELOP_LE . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 77
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 54
+
+    (35) expression_relop -> expression RELOP_NE . expression
+    (14) expression -> . expression_binop
+    (15) expression -> . expression_relop
+    (16) expression -> . expression_unary
+    (17) expression -> . matrix_funcs
+    (18) expression -> . constant
+    (19) expression -> . ID
+    (20) expression -> . matrix
+    (21) expression -> . ( expression )
+    (22) expression_binop -> . expression + expression
+    (23) expression_binop -> . expression - expression
+    (24) expression_binop -> . expression * expression
+    (25) expression_binop -> . expression / expression
+    (26) expression_binop -> . expression MATRIX_PLUS expression
+    (27) expression_binop -> . expression MATRIX_SUB expression
+    (28) expression_binop -> . expression MATRIX_MUL expression
+    (29) expression_binop -> . expression MATRIX_DIV expression
+    (30) expression_relop -> . expression RELOP_EQ expression
+    (31) expression_relop -> . expression RELOP_GT expression
+    (32) expression_relop -> . expression RELOP_LT expression
+    (33) expression_relop -> . expression RELOP_GE expression
+    (34) expression_relop -> . expression RELOP_LE expression
+    (35) expression_relop -> . expression RELOP_NE expression
+    (36) expression_unary -> . - expression
+    (37) expression_unary -> . expression '
+    (38) matrix_funcs -> . ZEROS ( DT_INTEGER )
+    (39) matrix_funcs -> . ONES ( DT_INTEGER )
+    (40) matrix_funcs -> . EYE ( DT_INTEGER )
+    (41) constant -> . DT_STRING
+    (42) constant -> . number
+    (43) matrix -> . [ vectors ]
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    ID              shift and go to state 23
+    (               shift and go to state 25
+    -               shift and go to state 26
+    ZEROS           shift and go to state 27
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+    DT_STRING       shift and go to state 31
+    [               shift and go to state 33
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    expression                     shift and go to state 78
+    expression_binop               shift and go to state 18
+    expression_relop               shift and go to state 19
+    expression_unary               shift and go to state 20
+    matrix_funcs                   shift and go to state 21
+    constant                       shift and go to state 22
+    matrix                         shift and go to state 24
+    number                         shift and go to state 32
+
+state 55
+
+    (37) expression_unary -> expression ' .
+
+    +               reduce using rule 37 (expression_unary -> expression ' .)
+    -               reduce using rule 37 (expression_unary -> expression ' .)
+    *               reduce using rule 37 (expression_unary -> expression ' .)
+    /               reduce using rule 37 (expression_unary -> expression ' .)
+    MATRIX_PLUS     reduce using rule 37 (expression_unary -> expression ' .)
+    MATRIX_SUB      reduce using rule 37 (expression_unary -> expression ' .)
+    MATRIX_MUL      reduce using rule 37 (expression_unary -> expression ' .)
+    MATRIX_DIV      reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_EQ        reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_GT        reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_LT        reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_GE        reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_LE        reduce using rule 37 (expression_unary -> expression ' .)
+    RELOP_NE        reduce using rule 37 (expression_unary -> expression ' .)
+    '               reduce using rule 37 (expression_unary -> expression ' .)
+    ;               reduce using rule 37 (expression_unary -> expression ' .)
+    )               reduce using rule 37 (expression_unary -> expression ' .)
+
+
+state 56
+
+    (21) expression -> ( expression . )
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    )               shift and go to state 79
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+
+state 57
+
+    (36) expression_unary -> - expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 36 (expression_unary -> - expression .)
+    -               reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_EQ        reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_GT        reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_LT        reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_GE        reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_LE        reduce using rule 36 (expression_unary -> - expression .)
+    RELOP_NE        reduce using rule 36 (expression_unary -> - expression .)
+    '               reduce using rule 36 (expression_unary -> - expression .)
+    ;               reduce using rule 36 (expression_unary -> - expression .)
+    )               reduce using rule 36 (expression_unary -> - expression .)
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! *               [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! /               [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 36 (expression_unary -> - expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 58
+
+    (38) matrix_funcs -> ZEROS ( . DT_INTEGER )
+
+    DT_INTEGER      shift and go to state 80
+
+
+state 59
+
+    (39) matrix_funcs -> ONES ( . DT_INTEGER )
+
+    DT_INTEGER      shift and go to state 81
+
+
+state 60
+
+    (40) matrix_funcs -> EYE ( . DT_INTEGER )
+
+    DT_INTEGER      shift and go to state 82
+
+
+state 61
+
+    (43) matrix -> [ vectors . ]
+    (45) vectors -> vectors . , vector
+
+    ]               shift and go to state 83
+    ,               shift and go to state 84
+
+
+state 62
+
+    (44) vectors -> vector .
+
+    ]               reduce using rule 44 (vectors -> vector .)
+    ,               reduce using rule 44 (vectors -> vector .)
+
+
+state 63
+
+    (46) vector -> [ numbers ] .
+
+    =               reduce using rule 46 (vector -> [ numbers ] .)
+    MUL_ASSIGN      reduce using rule 46 (vector -> [ numbers ] .)
+    DIV_ASSIGN      reduce using rule 46 (vector -> [ numbers ] .)
+    PLUS_ASSIGN     reduce using rule 46 (vector -> [ numbers ] .)
+    SUB_ASSIGN      reduce using rule 46 (vector -> [ numbers ] .)
+    ]               reduce using rule 46 (vector -> [ numbers ] .)
+    ,               reduce using rule 46 (vector -> [ numbers ] .)
+
+
+state 64
+
+    (47) numbers -> numbers , . number
+    (50) number -> . DT_INTEGER
+    (51) number -> . DT_FLOAT
+
+    DT_INTEGER      shift and go to state 28
+    DT_FLOAT        shift and go to state 34
+
+    number                         shift and go to state 85
+
+state 65
+
+    (22) expression_binop -> expression + expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 22 (expression_binop -> expression + expression .)
+    -               reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_EQ        reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_GT        reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_LT        reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_GE        reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_LE        reduce using rule 22 (expression_binop -> expression + expression .)
+    RELOP_NE        reduce using rule 22 (expression_binop -> expression + expression .)
+    '               reduce using rule 22 (expression_binop -> expression + expression .)
+    ;               reduce using rule 22 (expression_binop -> expression + expression .)
+    )               reduce using rule 22 (expression_binop -> expression + expression .)
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! *               [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! /               [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 22 (expression_binop -> expression + expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 66
+
+    (23) expression_binop -> expression - expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 23 (expression_binop -> expression - expression .)
+    -               reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_EQ        reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_GT        reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_LT        reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_GE        reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_LE        reduce using rule 23 (expression_binop -> expression - expression .)
+    RELOP_NE        reduce using rule 23 (expression_binop -> expression - expression .)
+    '               reduce using rule 23 (expression_binop -> expression - expression .)
+    ;               reduce using rule 23 (expression_binop -> expression - expression .)
+    )               reduce using rule 23 (expression_binop -> expression - expression .)
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! *               [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! /               [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 23 (expression_binop -> expression - expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 67
+
+    (24) expression_binop -> expression * expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 24 (expression_binop -> expression * expression .)
+    -               reduce using rule 24 (expression_binop -> expression * expression .)
+    *               reduce using rule 24 (expression_binop -> expression * expression .)
+    /               reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_EQ        reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_GT        reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_LT        reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_GE        reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_LE        reduce using rule 24 (expression_binop -> expression * expression .)
+    RELOP_NE        reduce using rule 24 (expression_binop -> expression * expression .)
+    '               reduce using rule 24 (expression_binop -> expression * expression .)
+    ;               reduce using rule 24 (expression_binop -> expression * expression .)
+    )               reduce using rule 24 (expression_binop -> expression * expression .)
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! MATRIX_PLUS     [ reduce using rule 24 (expression_binop -> expression * expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 24 (expression_binop -> expression * expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 24 (expression_binop -> expression * expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 24 (expression_binop -> expression * expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 68
+
+    (25) expression_binop -> expression / expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 25 (expression_binop -> expression / expression .)
+    -               reduce using rule 25 (expression_binop -> expression / expression .)
+    *               reduce using rule 25 (expression_binop -> expression / expression .)
+    /               reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_EQ        reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_GT        reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_LT        reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_GE        reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_LE        reduce using rule 25 (expression_binop -> expression / expression .)
+    RELOP_NE        reduce using rule 25 (expression_binop -> expression / expression .)
+    '               reduce using rule 25 (expression_binop -> expression / expression .)
+    ;               reduce using rule 25 (expression_binop -> expression / expression .)
+    )               reduce using rule 25 (expression_binop -> expression / expression .)
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! MATRIX_PLUS     [ reduce using rule 25 (expression_binop -> expression / expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 25 (expression_binop -> expression / expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 25 (expression_binop -> expression / expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 25 (expression_binop -> expression / expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 69
+
+    (26) expression_binop -> expression MATRIX_PLUS expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    -               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    *               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    /               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    MATRIX_PLUS     reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    MATRIX_SUB      reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_EQ        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_GT        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_LT        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_GE        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_LE        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    RELOP_NE        reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    '               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    ;               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    )               reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .)
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! MATRIX_MUL      [ reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 26 (expression_binop -> expression MATRIX_PLUS expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! MATRIX_PLUS     [ shift and go to state 45 ]
+  ! MATRIX_SUB      [ shift and go to state 46 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 70
+
+    (27) expression_binop -> expression MATRIX_SUB expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    -               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    *               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    /               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    MATRIX_PLUS     reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    MATRIX_SUB      reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_EQ        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_GT        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_LT        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_GE        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_LE        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    RELOP_NE        reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    '               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    ;               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    )               reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .)
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+
+  ! MATRIX_MUL      [ reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 27 (expression_binop -> expression MATRIX_SUB expression .) ]
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! MATRIX_PLUS     [ shift and go to state 45 ]
+  ! MATRIX_SUB      [ shift and go to state 46 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 71
+
+    (28) expression_binop -> expression MATRIX_MUL expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    -               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    *               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    /               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    MATRIX_PLUS     reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    MATRIX_SUB      reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    MATRIX_MUL      reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    MATRIX_DIV      reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_EQ        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_GT        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_LT        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_GE        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_LE        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    RELOP_NE        reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    '               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    ;               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+    )               reduce using rule 28 (expression_binop -> expression MATRIX_MUL expression .)
+
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! MATRIX_PLUS     [ shift and go to state 45 ]
+  ! MATRIX_SUB      [ shift and go to state 46 ]
+  ! MATRIX_MUL      [ shift and go to state 47 ]
+  ! MATRIX_DIV      [ shift and go to state 48 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 72
+
+    (29) expression_binop -> expression MATRIX_DIV expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+    +               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    -               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    *               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    /               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    MATRIX_PLUS     reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    MATRIX_SUB      reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    MATRIX_MUL      reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    MATRIX_DIV      reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_EQ        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_GT        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_LT        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_GE        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_LE        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    RELOP_NE        reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    '               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    ;               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+    )               reduce using rule 29 (expression_binop -> expression MATRIX_DIV expression .)
+
+  ! +               [ shift and go to state 41 ]
+  ! -               [ shift and go to state 42 ]
+  ! *               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! MATRIX_PLUS     [ shift and go to state 45 ]
+  ! MATRIX_SUB      [ shift and go to state 46 ]
+  ! MATRIX_MUL      [ shift and go to state 47 ]
+  ! MATRIX_DIV      [ shift and go to state 48 ]
+  ! RELOP_EQ        [ shift and go to state 49 ]
+  ! RELOP_GT        [ shift and go to state 50 ]
+  ! RELOP_LT        [ shift and go to state 51 ]
+  ! RELOP_GE        [ shift and go to state 52 ]
+  ! RELOP_LE        [ shift and go to state 53 ]
+  ! RELOP_NE        [ shift and go to state 54 ]
+  ! '               [ shift and go to state 55 ]
+
+
+state 73
+
+    (30) expression_relop -> expression RELOP_EQ expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .)
+    )               reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! -               [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! *               [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! /               [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_EQ        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_GT        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_LT        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_GE        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_LE        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! RELOP_NE        [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+  ! '               [ reduce using rule 30 (expression_relop -> expression RELOP_EQ expression .) ]
+
+
+state 74
+
+    (31) expression_relop -> expression RELOP_GT expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 31 (expression_relop -> expression RELOP_GT expression .)
+    )               reduce using rule 31 (expression_relop -> expression RELOP_GT expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! -               [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! *               [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! /               [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_EQ        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_GT        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_LT        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_GE        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_LE        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! RELOP_NE        [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+  ! '               [ reduce using rule 31 (expression_relop -> expression RELOP_GT expression .) ]
+
+
+state 75
+
+    (32) expression_relop -> expression RELOP_LT expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 32 (expression_relop -> expression RELOP_LT expression .)
+    )               reduce using rule 32 (expression_relop -> expression RELOP_LT expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! -               [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! *               [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! /               [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_EQ        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_GT        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_LT        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_GE        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_LE        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! RELOP_NE        [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+  ! '               [ reduce using rule 32 (expression_relop -> expression RELOP_LT expression .) ]
+
+
+state 76
+
+    (33) expression_relop -> expression RELOP_GE expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 33 (expression_relop -> expression RELOP_GE expression .)
+    )               reduce using rule 33 (expression_relop -> expression RELOP_GE expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! -               [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! *               [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! /               [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_EQ        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_GT        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_LT        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_GE        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_LE        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! RELOP_NE        [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+  ! '               [ reduce using rule 33 (expression_relop -> expression RELOP_GE expression .) ]
+
+
+state 77
+
+    (34) expression_relop -> expression RELOP_LE expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 34 (expression_relop -> expression RELOP_LE expression .)
+    )               reduce using rule 34 (expression_relop -> expression RELOP_LE expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! -               [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! *               [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! /               [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_EQ        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_GT        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_LT        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_GE        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_LE        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! RELOP_NE        [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+  ! '               [ reduce using rule 34 (expression_relop -> expression RELOP_LE expression .) ]
+
+
+state 78
+
+    (35) expression_relop -> expression RELOP_NE expression .
+    (22) expression_binop -> expression . + expression
+    (23) expression_binop -> expression . - expression
+    (24) expression_binop -> expression . * expression
+    (25) expression_binop -> expression . / expression
+    (26) expression_binop -> expression . MATRIX_PLUS expression
+    (27) expression_binop -> expression . MATRIX_SUB expression
+    (28) expression_binop -> expression . MATRIX_MUL expression
+    (29) expression_binop -> expression . MATRIX_DIV expression
+    (30) expression_relop -> expression . RELOP_EQ expression
+    (31) expression_relop -> expression . RELOP_GT expression
+    (32) expression_relop -> expression . RELOP_LT expression
+    (33) expression_relop -> expression . RELOP_GE expression
+    (34) expression_relop -> expression . RELOP_LE expression
+    (35) expression_relop -> expression . RELOP_NE expression
+    (37) expression_unary -> expression . '
+
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for MATRIX_PLUS resolved as shift
+  ! shift/reduce conflict for MATRIX_SUB resolved as shift
+  ! shift/reduce conflict for MATRIX_MUL resolved as shift
+  ! shift/reduce conflict for MATRIX_DIV resolved as shift
+  ! shift/reduce conflict for RELOP_EQ resolved as shift
+  ! shift/reduce conflict for RELOP_GT resolved as shift
+  ! shift/reduce conflict for RELOP_LT resolved as shift
+  ! shift/reduce conflict for RELOP_GE resolved as shift
+  ! shift/reduce conflict for RELOP_LE resolved as shift
+  ! shift/reduce conflict for RELOP_NE resolved as shift
+  ! shift/reduce conflict for ' resolved as shift
+    ;               reduce using rule 35 (expression_relop -> expression RELOP_NE expression .)
+    )               reduce using rule 35 (expression_relop -> expression RELOP_NE expression .)
+    +               shift and go to state 41
+    -               shift and go to state 42
+    *               shift and go to state 43
+    /               shift and go to state 44
+    MATRIX_PLUS     shift and go to state 45
+    MATRIX_SUB      shift and go to state 46
+    MATRIX_MUL      shift and go to state 47
+    MATRIX_DIV      shift and go to state 48
+    RELOP_EQ        shift and go to state 49
+    RELOP_GT        shift and go to state 50
+    RELOP_LT        shift and go to state 51
+    RELOP_GE        shift and go to state 52
+    RELOP_LE        shift and go to state 53
+    RELOP_NE        shift and go to state 54
+    '               shift and go to state 55
+
+  ! +               [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! -               [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! *               [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! /               [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! MATRIX_PLUS     [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! MATRIX_SUB      [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! MATRIX_MUL      [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! MATRIX_DIV      [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_EQ        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_GT        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_LT        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_GE        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_LE        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! RELOP_NE        [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+  ! '               [ reduce using rule 35 (expression_relop -> expression RELOP_NE expression .) ]
+
+
+state 79
+
+    (21) expression -> ( expression ) .
+
+    +               reduce using rule 21 (expression -> ( expression ) .)
+    -               reduce using rule 21 (expression -> ( expression ) .)
+    *               reduce using rule 21 (expression -> ( expression ) .)
+    /               reduce using rule 21 (expression -> ( expression ) .)
+    MATRIX_PLUS     reduce using rule 21 (expression -> ( expression ) .)
+    MATRIX_SUB      reduce using rule 21 (expression -> ( expression ) .)
+    MATRIX_MUL      reduce using rule 21 (expression -> ( expression ) .)
+    MATRIX_DIV      reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_EQ        reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_GT        reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_LT        reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_GE        reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_LE        reduce using rule 21 (expression -> ( expression ) .)
+    RELOP_NE        reduce using rule 21 (expression -> ( expression ) .)
+    '               reduce using rule 21 (expression -> ( expression ) .)
+    ;               reduce using rule 21 (expression -> ( expression ) .)
+    )               reduce using rule 21 (expression -> ( expression ) .)
+
+
+state 80
+
+    (38) matrix_funcs -> ZEROS ( DT_INTEGER . )
+
+    )               shift and go to state 86
+
+
+state 81
+
+    (39) matrix_funcs -> ONES ( DT_INTEGER . )
+
+    )               shift and go to state 87
+
+
+state 82
+
+    (40) matrix_funcs -> EYE ( DT_INTEGER . )
+
+    )               shift and go to state 88
+
+
+state 83
+
+    (43) matrix -> [ vectors ] .
+
+    +               reduce using rule 43 (matrix -> [ vectors ] .)
+    -               reduce using rule 43 (matrix -> [ vectors ] .)
+    *               reduce using rule 43 (matrix -> [ vectors ] .)
+    /               reduce using rule 43 (matrix -> [ vectors ] .)
+    MATRIX_PLUS     reduce using rule 43 (matrix -> [ vectors ] .)
+    MATRIX_SUB      reduce using rule 43 (matrix -> [ vectors ] .)
+    MATRIX_MUL      reduce using rule 43 (matrix -> [ vectors ] .)
+    MATRIX_DIV      reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_EQ        reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_GT        reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_LT        reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_GE        reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_LE        reduce using rule 43 (matrix -> [ vectors ] .)
+    RELOP_NE        reduce using rule 43 (matrix -> [ vectors ] .)
+    '               reduce using rule 43 (matrix -> [ vectors ] .)
+    ;               reduce using rule 43 (matrix -> [ vectors ] .)
+    )               reduce using rule 43 (matrix -> [ vectors ] .)
+
+
+state 84
+
+    (45) vectors -> vectors , . vector
+    (46) vector -> . [ numbers ]
+
+    [               shift and go to state 16
+
+    vector                         shift and go to state 89
+
+state 85
+
+    (47) numbers -> numbers , number .
+
+    ]               reduce using rule 47 (numbers -> numbers , number .)
+    ,               reduce using rule 47 (numbers -> numbers , number .)
+
+
+state 86
+
+    (38) matrix_funcs -> ZEROS ( DT_INTEGER ) .
+
+    +               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    -               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    *               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    /               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    MATRIX_PLUS     reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    MATRIX_SUB      reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    MATRIX_MUL      reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    MATRIX_DIV      reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_EQ        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_GT        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_LT        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_GE        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_LE        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    RELOP_NE        reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    '               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    ;               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+    )               reduce using rule 38 (matrix_funcs -> ZEROS ( DT_INTEGER ) .)
+
+
+state 87
+
+    (39) matrix_funcs -> ONES ( DT_INTEGER ) .
+
+    +               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    -               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    *               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    /               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    MATRIX_PLUS     reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    MATRIX_SUB      reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    MATRIX_MUL      reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    MATRIX_DIV      reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_EQ        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_GT        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_LT        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_GE        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_LE        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    RELOP_NE        reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    '               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    ;               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+    )               reduce using rule 39 (matrix_funcs -> ONES ( DT_INTEGER ) .)
+
+
+state 88
+
+    (40) matrix_funcs -> EYE ( DT_INTEGER ) .
+
+    +               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    -               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    *               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    /               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    MATRIX_PLUS     reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    MATRIX_SUB      reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    MATRIX_MUL      reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    MATRIX_DIV      reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_EQ        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_GT        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_LT        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_GE        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_LE        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    RELOP_NE        reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    '               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    ;               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+    )               reduce using rule 40 (matrix_funcs -> EYE ( DT_INTEGER ) .)
+
+
+state 89
+
+    (45) vectors -> vectors , vector .
+
+    ]               reduce using rule 45 (vectors -> vectors , vector .)
+    ,               reduce using rule 45 (vectors -> vectors , vector .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for + in state 73 resolved as shift
+WARNING: shift/reduce conflict for - in state 73 resolved as shift
+WARNING: shift/reduce conflict for * in state 73 resolved as shift
+WARNING: shift/reduce conflict for / in state 73 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 73 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 73 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 73 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 73 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 73 resolved as shift
+WARNING: shift/reduce conflict for ' in state 73 resolved as shift
+WARNING: shift/reduce conflict for + in state 74 resolved as shift
+WARNING: shift/reduce conflict for - in state 74 resolved as shift
+WARNING: shift/reduce conflict for * in state 74 resolved as shift
+WARNING: shift/reduce conflict for / in state 74 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 74 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 74 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 74 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 74 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 74 resolved as shift
+WARNING: shift/reduce conflict for ' in state 74 resolved as shift
+WARNING: shift/reduce conflict for + in state 75 resolved as shift
+WARNING: shift/reduce conflict for - in state 75 resolved as shift
+WARNING: shift/reduce conflict for * in state 75 resolved as shift
+WARNING: shift/reduce conflict for / in state 75 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 75 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 75 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 75 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 75 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 75 resolved as shift
+WARNING: shift/reduce conflict for ' in state 75 resolved as shift
+WARNING: shift/reduce conflict for + in state 76 resolved as shift
+WARNING: shift/reduce conflict for - in state 76 resolved as shift
+WARNING: shift/reduce conflict for * in state 76 resolved as shift
+WARNING: shift/reduce conflict for / in state 76 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 76 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 76 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 76 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 76 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 76 resolved as shift
+WARNING: shift/reduce conflict for ' in state 76 resolved as shift
+WARNING: shift/reduce conflict for + in state 77 resolved as shift
+WARNING: shift/reduce conflict for - in state 77 resolved as shift
+WARNING: shift/reduce conflict for * in state 77 resolved as shift
+WARNING: shift/reduce conflict for / in state 77 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 77 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 77 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 77 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 77 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 77 resolved as shift
+WARNING: shift/reduce conflict for ' in state 77 resolved as shift
+WARNING: shift/reduce conflict for + in state 78 resolved as shift
+WARNING: shift/reduce conflict for - in state 78 resolved as shift
+WARNING: shift/reduce conflict for * in state 78 resolved as shift
+WARNING: shift/reduce conflict for / in state 78 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_PLUS in state 78 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_SUB in state 78 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_MUL in state 78 resolved as shift
+WARNING: shift/reduce conflict for MATRIX_DIV in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_EQ in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GT in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LT in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_GE in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_LE in state 78 resolved as shift
+WARNING: shift/reduce conflict for RELOP_NE in state 78 resolved as shift
+WARNING: shift/reduce conflict for ' in state 78 resolved as shift
