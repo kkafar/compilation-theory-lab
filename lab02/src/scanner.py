@@ -31,7 +31,6 @@ tokens = (
     'RELOP_GE',
     'RELOP_NE',
     'RELOP_EQ',
-    "COMMENT",
     "DT_INTEGER",
     "DT_FLOAT",
     "DT_STRING"

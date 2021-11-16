@@ -7,14 +7,16 @@ import ply.yacc as yacc
 tokens = scanner.tokens
 
 precedence = (
-    # to fill ...
-    ("nonassoc", 'IF'),
+    ("nonassoc", 'IFX'),
     ("nonassoc", 'ELSE'),
+    ("nonassoc", 'RELOP_EQ', 'RELOP_NE', 'RELOP_GT',
+     'RELOP_LT', 'RELOP_GE', 'RELOP_LE'),
     ("left", '+', '-'),
     ("left", '*', '/'),
     ("left", 'MATRIX_PLUS', 'MATRIX_SUB'),
     ("left", 'MATRIX_MUL', 'MATRIX_DIV'),
-    # to fill ...
+    ("right", 'UMINUS'),
+    ("left", '\'')
 )
 
 
@@ -30,12 +32,18 @@ def p_program(p):
     """program : instructions_opt"""
 
 
+def p_empty(p):
+    """
+        empty : 
+    """
+
+
 def p_instruction_opt_1(p):
     """instructions_opt : instructions """
 
 
 def p_instruction_opt_2(p):
-    """instructions_opt : """
+    """instructions_opt : empty """
 
 
 def p_instructions(p):
@@ -54,7 +62,13 @@ def p_instruction(p):
                     | return_statement
                     | while_loop
                     | for_loop
-                    | '{' instructions '}'
+                    | instruction_block
+    """
+
+
+def p_instruction_block(p):
+    """
+        instruction_block : '{' instructions '}'
     """
 
 
@@ -84,7 +98,7 @@ def p_expression(p):
                   | ID
                   | matrix
                   | '(' expression ')'
-                  """
+    """
 
 
 def p_expression_binop(p):
@@ -110,16 +124,16 @@ def p_expression_relop(p):
 
 
 def p_expression_unary(p):
-    """expression_unary : '-' expression
+    """expression_unary : '-' expression %prec UMINUS
                 | expression '\\''
     """
 
 
 def p_matrix_funcs(p):
     """
-        matrix_funcs : ZEROS '(' DT_INTEGER ')'
-                    | ONES '(' DT_INTEGER ')'
-                    | EYE '(' DT_INTEGER ')'  
+        matrix_funcs : ZEROS '(' expression_list ')'
+                    | ONES '(' expression_list ')'
+                    | EYE '(' expression_list ')'  
 
     """
 
@@ -154,7 +168,7 @@ def p_numbers(p):
     """
         numbers : numbers ',' number 
                 | number
-                | 
+                | empty
     """
 
 
@@ -167,8 +181,8 @@ def p_number(p):
 
 def p_conditional_statement(p):
     """
-        conditional_statement : IF expression instructions
-                    | IF expression instructions ELSE instructions
+        conditional_statement : IF '(' expression ')' instruction %prec IFX
+                    | IF '(' expression ')' instruction ELSE instruction
     """
 
 
@@ -201,25 +215,21 @@ def p_expression_list(p):
 
 def p_while_loop(p):
     """
-        while_loop : WHILE '(' expression ')' instructions
+        while_loop : WHILE '(' expression ')' instruction
     """
 
 
 def p_for_loop(p):
     """
-        for_loop : FOR ID '=' range_value ':' range_value instructions
+        for_loop : FOR ID '=' range_value ':' range_value instruction
     """
 
 
 def p_range_value(p):
     """
         range_value : DT_INTEGER 
-                    | ID
+                    | ID                   
     """
-
-
-# to finish the grammar
-# ....
 
 
 parser = yacc.yacc()
