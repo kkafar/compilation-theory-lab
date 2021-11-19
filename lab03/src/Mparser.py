@@ -2,6 +2,7 @@
 
 import scanner
 import ply.yacc as yacc
+import AST
 
 
 tokens = scanner.tokens
@@ -31,27 +32,39 @@ def p_error(p):
 
 def p_program(p):
     """program : instructions_opt"""
+    p[0] = AST.Node(p[1])
 
 
 def p_empty(p):
     """
         empty : 
     """
+    p[0] = AST.Empty()
 
 
 def p_instruction_opt_1(p):
     """instructions_opt : instructions """
+    p[0] = p[1]
 
 
 def p_instruction_opt_2(p):
     """instructions_opt : empty """
+    p[0] = p[1]
 
 
 def p_instructions(p):
     """
         instructions : instructions instruction
-                    | instruction
     """
+
+    p[0] = AST.Instructions(p[0].children + [p[1]])
+
+def p_instructions_2(p):
+    """
+        instructions : instruction
+    """
+    p[0] = AST.Instructions(p[1])
+    
 
 
 def p_instruction(p):
@@ -65,6 +78,25 @@ def p_instruction(p):
                     | for_loop
                     | instruction_block
     """
+
+    if p[1] == 'assignment':
+        pass
+    if p[1] == 'conditional_statement':
+        pass
+    if p[1] == 'print_statement':
+        pass
+    if p[1] == 'jump_statement':
+        pass
+    if p[1] == 'return_statement':
+        pass
+    if p[1] == 'while_loop':
+        pass
+    if p[1] == 'for_loop':
+        pass
+    if p[1] == 'instruction_block':
+        pass
+
+
 
 
 def p_instruction_block(p):
@@ -88,6 +120,7 @@ def p_assign_id(p):
         assign_id : ID
                   | ID vector
     """
+    p[0] = AST.Variable(p[1])
 
 
 def p_expression(p):
@@ -113,6 +146,8 @@ def p_expression_binop(p):
                 | expression MATRIX_DIV expression
     """
 
+    p[0] = AST.BinExpr(p[2], p[1], p[3])
+
 
 def p_expression_relop(p):
     """expression_relop : expression RELOP_EQ expression
@@ -122,12 +157,18 @@ def p_expression_relop(p):
                 | expression RELOP_LE expression
                 | expression RELOP_NE expression
     """
+    p[0] = AST.RelopExpr(p[2], p[1], p[3])
 
 
 def p_expression_unary(p):
     """expression_unary : '-' expression %prec UMINUS
                 | expression '\\''
     """
+    
+    if p[1] == '-':
+        p[0] = AST.UnaryExpr(p[1], p[2])
+    elif p[2] == '\'':
+        p[0] = AST.UnaryExpr(p[2], p[1])
 
 
 def p_matrix_funcs(p):
@@ -178,6 +219,11 @@ def p_number(p):
         number : DT_INTEGER 
                | DT_FLOAT
     """
+
+    if p[1] == 'DT_INTEGER':
+        p[0] = AST.IntNum(p[1])
+    elif p[0] == 'DT_FLOAT':
+        p[0] = AST.FloatNum(p[1])
 
 
 def p_conditional_statement(p):
