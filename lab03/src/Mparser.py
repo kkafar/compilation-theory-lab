@@ -189,13 +189,16 @@ def p_matrix_funcs(p):
 
 def p_constant(p):
     """
-        constant : DT_STRING
-                | number
+        constant : number
     """
-    if isinstance(p[1], str):
-        p[0] = AST.Constant(p[1])
-    else:
-        p[0] = p[1]
+    p[0] = p[1]
+
+
+def p_constant_str(p):
+    """
+        constant : DT_STRING
+    """
+    p[0] = AST.StringValue(p[1])
 
 
 def p_matrix(p):
@@ -244,13 +247,20 @@ def p_numbers(p):
         p[0] = AST.Vector(p[1])
 
 
-def p_number(p):
+def p_number_int(p):
     """
         number : DT_INTEGER 
-               | DT_FLOAT
     """
 
-    p[0] = AST.Constant(p[1])
+    p[0] = AST.IntNum(p[1])
+
+
+def p_number_float(p):
+    """
+        number : DT_FLOAT
+    """
+
+    p[0] = AST.FloatNum(p[1])
 
 
 def p_conditional_statement(p):

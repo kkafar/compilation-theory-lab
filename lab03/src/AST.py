@@ -5,6 +5,21 @@ class Constant:
         self.value = value
 
 
+class IntNum:
+    def __init__(self, value):
+        self.value = value
+
+
+class FloatNum:
+    def __init__(self, value):
+        self.value = value
+
+
+class StringValue:
+    def __init__(self, string):
+        self.string = string
+
+
 class Variable:
     def __init__(self, name):
         self.name = name

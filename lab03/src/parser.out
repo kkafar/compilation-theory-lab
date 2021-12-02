@@ -52,8 +52,8 @@ Rule 46    expression_unary -> expression '
 Rule 47    matrix_funcs -> ZEROS ( expression_list )
 Rule 48    matrix_funcs -> ONES ( expression_list )
 Rule 49    matrix_funcs -> EYE ( expression_list )
-Rule 50    constant -> DT_STRING
-Rule 51    constant -> number
+Rule 50    constant -> number
+Rule 51    constant -> DT_STRING
 Rule 52    matrix -> [ vectors ]
 Rule 53    vectors -> vector
 Rule 54    vectors -> vectors , vector
@@ -95,7 +95,7 @@ CONTINUE             : 64
 DIV_ASSIGN           : 18
 DT_FLOAT             : 60
 DT_INTEGER           : 59 72
-DT_STRING            : 50
+DT_STRING            : 51
 ELSE                 : 62
 EYE                  : 49
 FOR                  : 71
@@ -145,7 +145,7 @@ instructions_opt     : 1
 jump_statement       : 10
 matrix               : 28
 matrix_funcs         : 26
-number               : 51 57 58
+number               : 50 57 58
 numbers              : 55 57
 print_statement      : 9
 program              : 0
@@ -506,8 +506,8 @@ state 16
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -518,7 +518,7 @@ state 16
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -531,7 +531,7 @@ state 16
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 17
 
@@ -578,8 +578,8 @@ state 19
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -591,7 +591,7 @@ state 19
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -603,7 +603,7 @@ state 19
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 20
 
@@ -735,8 +735,8 @@ state 25
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -747,7 +747,7 @@ state 25
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -759,7 +759,7 @@ state 25
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 26
 
@@ -791,8 +791,8 @@ state 26
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -803,7 +803,7 @@ state 26
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -815,7 +815,7 @@ state 26
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 27
 
@@ -847,8 +847,8 @@ state 27
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -859,7 +859,7 @@ state 27
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -871,7 +871,7 @@ state 27
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 28
 
@@ -903,8 +903,8 @@ state 28
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -915,7 +915,7 @@ state 28
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -927,7 +927,7 @@ state 28
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 29
 
@@ -959,8 +959,8 @@ state 29
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -971,7 +971,7 @@ state 29
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -983,7 +983,7 @@ state 29
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 30
 
@@ -1016,8 +1016,8 @@ state 30
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -1028,7 +1028,7 @@ state 30
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -1040,7 +1040,7 @@ state 30
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 31
 
@@ -1288,8 +1288,8 @@ state 40
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -1300,7 +1300,7 @@ state 40
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -1312,7 +1312,7 @@ state 40
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 41
 
@@ -1344,8 +1344,8 @@ state 41
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -1356,7 +1356,7 @@ state 41
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -1368,7 +1368,7 @@ state 41
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 42
 
@@ -1393,50 +1393,50 @@ state 44
 
 state 45
 
-    (50) constant -> DT_STRING .
+    (50) constant -> number .
 
-    +               reduce using rule 50 (constant -> DT_STRING .)
-    -               reduce using rule 50 (constant -> DT_STRING .)
-    *               reduce using rule 50 (constant -> DT_STRING .)
-    /               reduce using rule 50 (constant -> DT_STRING .)
-    MATRIX_PLUS     reduce using rule 50 (constant -> DT_STRING .)
-    MATRIX_SUB      reduce using rule 50 (constant -> DT_STRING .)
-    MATRIX_MUL      reduce using rule 50 (constant -> DT_STRING .)
-    MATRIX_DIV      reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_EQ        reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_GT        reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_LT        reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_GE        reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_LE        reduce using rule 50 (constant -> DT_STRING .)
-    RELOP_NE        reduce using rule 50 (constant -> DT_STRING .)
-    '               reduce using rule 50 (constant -> DT_STRING .)
-    ;               reduce using rule 50 (constant -> DT_STRING .)
-    ,               reduce using rule 50 (constant -> DT_STRING .)
-    )               reduce using rule 50 (constant -> DT_STRING .)
+    +               reduce using rule 50 (constant -> number .)
+    -               reduce using rule 50 (constant -> number .)
+    *               reduce using rule 50 (constant -> number .)
+    /               reduce using rule 50 (constant -> number .)
+    MATRIX_PLUS     reduce using rule 50 (constant -> number .)
+    MATRIX_SUB      reduce using rule 50 (constant -> number .)
+    MATRIX_MUL      reduce using rule 50 (constant -> number .)
+    MATRIX_DIV      reduce using rule 50 (constant -> number .)
+    RELOP_EQ        reduce using rule 50 (constant -> number .)
+    RELOP_GT        reduce using rule 50 (constant -> number .)
+    RELOP_LT        reduce using rule 50 (constant -> number .)
+    RELOP_GE        reduce using rule 50 (constant -> number .)
+    RELOP_LE        reduce using rule 50 (constant -> number .)
+    RELOP_NE        reduce using rule 50 (constant -> number .)
+    '               reduce using rule 50 (constant -> number .)
+    ;               reduce using rule 50 (constant -> number .)
+    ,               reduce using rule 50 (constant -> number .)
+    )               reduce using rule 50 (constant -> number .)
 
 
 state 46
 
-    (51) constant -> number .
+    (51) constant -> DT_STRING .
 
-    +               reduce using rule 51 (constant -> number .)
-    -               reduce using rule 51 (constant -> number .)
-    *               reduce using rule 51 (constant -> number .)
-    /               reduce using rule 51 (constant -> number .)
-    MATRIX_PLUS     reduce using rule 51 (constant -> number .)
-    MATRIX_SUB      reduce using rule 51 (constant -> number .)
-    MATRIX_MUL      reduce using rule 51 (constant -> number .)
-    MATRIX_DIV      reduce using rule 51 (constant -> number .)
-    RELOP_EQ        reduce using rule 51 (constant -> number .)
-    RELOP_GT        reduce using rule 51 (constant -> number .)
-    RELOP_LT        reduce using rule 51 (constant -> number .)
-    RELOP_GE        reduce using rule 51 (constant -> number .)
-    RELOP_LE        reduce using rule 51 (constant -> number .)
-    RELOP_NE        reduce using rule 51 (constant -> number .)
-    '               reduce using rule 51 (constant -> number .)
-    ;               reduce using rule 51 (constant -> number .)
-    ,               reduce using rule 51 (constant -> number .)
-    )               reduce using rule 51 (constant -> number .)
+    +               reduce using rule 51 (constant -> DT_STRING .)
+    -               reduce using rule 51 (constant -> DT_STRING .)
+    *               reduce using rule 51 (constant -> DT_STRING .)
+    /               reduce using rule 51 (constant -> DT_STRING .)
+    MATRIX_PLUS     reduce using rule 51 (constant -> DT_STRING .)
+    MATRIX_SUB      reduce using rule 51 (constant -> DT_STRING .)
+    MATRIX_MUL      reduce using rule 51 (constant -> DT_STRING .)
+    MATRIX_DIV      reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_EQ        reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_GT        reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_LT        reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_GE        reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_LE        reduce using rule 51 (constant -> DT_STRING .)
+    RELOP_NE        reduce using rule 51 (constant -> DT_STRING .)
+    '               reduce using rule 51 (constant -> DT_STRING .)
+    ;               reduce using rule 51 (constant -> DT_STRING .)
+    ,               reduce using rule 51 (constant -> DT_STRING .)
+    )               reduce using rule 51 (constant -> DT_STRING .)
 
 
 state 47
@@ -1623,8 +1623,8 @@ state 54
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -1635,7 +1635,7 @@ state 54
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -1647,7 +1647,7 @@ state 54
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 55
 
@@ -2006,8 +2006,8 @@ state 66
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2018,7 +2018,7 @@ state 66
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2030,7 +2030,7 @@ state 66
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 67
 
@@ -2062,8 +2062,8 @@ state 67
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2074,7 +2074,7 @@ state 67
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2086,7 +2086,7 @@ state 67
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 68
 
@@ -2118,8 +2118,8 @@ state 68
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2130,7 +2130,7 @@ state 68
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2142,7 +2142,7 @@ state 68
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 69
 
@@ -2174,8 +2174,8 @@ state 69
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2186,7 +2186,7 @@ state 69
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2198,7 +2198,7 @@ state 69
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 70
 
@@ -2230,8 +2230,8 @@ state 70
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2242,7 +2242,7 @@ state 70
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2254,7 +2254,7 @@ state 70
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 71
 
@@ -2286,8 +2286,8 @@ state 71
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2298,7 +2298,7 @@ state 71
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2310,7 +2310,7 @@ state 71
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 72
 
@@ -2342,8 +2342,8 @@ state 72
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2354,7 +2354,7 @@ state 72
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2366,7 +2366,7 @@ state 72
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 73
 
@@ -2398,8 +2398,8 @@ state 73
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2410,7 +2410,7 @@ state 73
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2422,7 +2422,7 @@ state 73
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 74
 
@@ -2454,8 +2454,8 @@ state 74
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2466,7 +2466,7 @@ state 74
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2478,7 +2478,7 @@ state 74
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 75
 
@@ -2510,8 +2510,8 @@ state 75
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2522,7 +2522,7 @@ state 75
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2534,7 +2534,7 @@ state 75
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 76
 
@@ -2566,8 +2566,8 @@ state 76
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2578,7 +2578,7 @@ state 76
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2590,7 +2590,7 @@ state 76
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 77
 
@@ -2622,8 +2622,8 @@ state 77
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2634,7 +2634,7 @@ state 77
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2646,7 +2646,7 @@ state 77
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 78
 
@@ -2678,8 +2678,8 @@ state 78
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2690,7 +2690,7 @@ state 78
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2702,7 +2702,7 @@ state 78
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 79
 
@@ -2734,8 +2734,8 @@ state 79
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2746,7 +2746,7 @@ state 79
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2758,7 +2758,7 @@ state 79
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 80
 
@@ -2790,8 +2790,8 @@ state 80
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2802,7 +2802,7 @@ state 80
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2814,7 +2814,7 @@ state 80
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 81
 
@@ -2964,8 +2964,8 @@ state 84
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -2976,7 +2976,7 @@ state 84
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -2989,7 +2989,7 @@ state 84
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 85
 
@@ -3023,8 +3023,8 @@ state 85
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -3035,7 +3035,7 @@ state 85
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -3048,7 +3048,7 @@ state 85
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 86
 
@@ -3082,8 +3082,8 @@ state 86
     (47) matrix_funcs -> . ZEROS ( expression_list )
     (48) matrix_funcs -> . ONES ( expression_list )
     (49) matrix_funcs -> . EYE ( expression_list )
-    (50) constant -> . DT_STRING
-    (51) constant -> . number
+    (50) constant -> . number
+    (51) constant -> . DT_STRING
     (52) matrix -> . [ vectors ]
     (59) number -> . DT_INTEGER
     (60) number -> . DT_FLOAT
@@ -3094,7 +3094,7 @@ state 86
     ZEROS           shift and go to state 42
     ONES            shift and go to state 43
     EYE             shift and go to state 44
-    DT_STRING       shift and go to state 45
+    DT_STRING       shift and go to state 46
     [               shift and go to state 47
     DT_INTEGER      shift and go to state 48
     DT_FLOAT        shift and go to state 49
@@ -3107,7 +3107,7 @@ state 86
     matrix_funcs                   shift and go to state 36
     constant                       shift and go to state 37
     matrix                         shift and go to state 38
-    number                         shift and go to state 46
+    number                         shift and go to state 45
 
 state 87
 

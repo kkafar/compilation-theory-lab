@@ -22,6 +22,21 @@ class TreePrinter:
         print("|  "*indent, end='')
         print(self.value)
 
+    @addToClass(AST.IntNum)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print(self.value)
+
+    @addToClass(AST.FloatNum)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print(self.value)
+
+    @addToClass(AST.StringValue)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print(f'"{self.string}"')
+
     @addToClass(AST.Assignment)
     def printTree(self, indent=0):
         print("|  "*indent, end='')
