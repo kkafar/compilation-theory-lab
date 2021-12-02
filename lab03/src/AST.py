@@ -1,34 +1,16 @@
 
 
-class Node(object):
-    count = 0
-
-    def __init__(self, children=None):
-        self.ID = str(Node.count)
-        Node.count += 1
-
-        if not children:
-            self.children = []
-
-        elif hasattr(children, '__len__ '):
-            self.children = children
-            print(children, self.children)
-        else:
-            self.children = [children]
-            self.next = []
-
-
-class Constant(Node):
+class Constant:
     def __init__(self, value):
         self.value = value
 
 
-class Variable(Node):
+class Variable:
     def __init__(self, name):
         self.name = name
 
 
-class BinExpr(Node):
+class BinExpr:
     def __init__(self, op, left, right):
         self.op = op
         self.left = left
@@ -37,7 +19,7 @@ class BinExpr(Node):
         self.children = [left, right]
 
 
-class RelopExpr(Node):
+class RelopExpr:
     def __init__(self, op, left, right):
         self.op = op
         self.left = left
@@ -46,45 +28,48 @@ class RelopExpr(Node):
         self.children = [left, right]
 
 
-class UnaryExpr(Node):
+class UnaryExpr:
     def __init__(self, operator, operand):
         self.operator = operator
         self.operand = operand
 
 
-class RelExpr(Node):
+class RelExpr:
     def __init__(self, op, left, right):
         self.op = op
         self.left = left
         self.right = right
 
 
-class Instructions(Node):
-    def __init__(self, children):
-        super().__init__(children)
+class Instructions:
+    def __init__(self, instruction):
+        if hasattr(instruction, '__len__'):
+            self.instructions = instruction
+        else:
+            self.instructions = [instruction]
 
 
-class Assignment(Node):
+class Assignment:
     def __init__(self, op, left, right):
         self.op = op
         self.left = left
         self.right = right
 
 
-class Function(Node):
+class Function:
     def __init__(self, function, expressions):
         self.function = function
         self.expressions = expressions
 
 
-class Conditional(Node):
+class Conditional:
     def __init__(self, condition, if_instruction, else_instruction=None):
         self.condition = condition
         self.if_instruction = if_instruction
         self.else_instruction = else_instruction
 
 
-class Vector(Node):
+class Vector:
     def __init__(self, value=None):
         if value is None:
             self.values = []
@@ -92,13 +77,13 @@ class Vector(Node):
             self.values = [value]
 
 
-class Statement(Node):
+class Statement:
     def __init__(self, statement, expression=None):
         self.statement = statement
         self.expression = expression
 
 
-class Expressions(Node):
+class Expressions:
     def __init__(self, expression=None):
         if expression is not None:
             self.expressions = [expression]
@@ -106,13 +91,13 @@ class Expressions(Node):
             self.expressions = []
 
 
-class WhileLoop(Node):
+class WhileLoop:
     def __init__(self, expression, instruction):
         self.expression = expression
         self.instruction = instruction
 
 
-class ForLoop(Node):
+class ForLoop:
     def __init__(self, variable, range_value_left,  range_value_right,  instruction):
         self.variable = variable
         self.range_value_left = range_value_left
@@ -120,16 +105,16 @@ class ForLoop(Node):
         self.instruction = instruction
 
 
-class Slice(Node):
+class Slice:
     def __init__(self, matrix, vector):
         self.matrix = matrix
         self.vector = vector
 
 
-class Empty(Node):
+class Empty:
     pass
 
 
-class Error(Node):
+class Error:
     def __init__(self):
         pass

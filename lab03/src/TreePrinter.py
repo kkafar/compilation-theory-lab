@@ -12,15 +12,10 @@ def addToClass(cls):
 
 class TreePrinter:
 
-    @addToClass(AST.Node)
-    def printTree(self, indent=0):
-        for child in self.children:
-            child.printTree(indent)
-
     @addToClass(AST.Instructions)
     def printTree(self, indent=0):
-        for child in self.children:
-            child.printTree(indent)
+        for instruction in self.instructions:
+            instruction.printTree(indent)
 
     @addToClass(AST.Constant)
     def printTree(self, indent=0):

@@ -32,7 +32,7 @@ def p_error(p):
 
 def p_program(p):
     """program : instructions_opt"""
-    p[0] = AST.Node(p[1])
+    p[0] = p[1]
 
 
 def p_empty(p):
@@ -58,7 +58,7 @@ def p_instructions(p):
     """
 
     p[0] = p[1]
-    p[0].children += [p[2]]
+    p[0].instructions += [p[2]]
 
 
 def p_instructions_2(p):
