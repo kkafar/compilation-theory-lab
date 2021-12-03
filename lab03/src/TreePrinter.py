@@ -12,15 +12,16 @@ def addToClass(cls):
 
 class TreePrinter:
 
+
+    @addToClass(AST.Program)
+    def printTree(self, indent=0):
+        if self.instructions:
+            self.instructions.printTree()
+
     @addToClass(AST.Instructions)
     def printTree(self, indent=0):
         for instruction in self.instructions:
             instruction.printTree(indent)
-
-    @addToClass(AST.Constant)
-    def printTree(self, indent=0):
-        print("|  "*indent, end='')
-        print(self.value)
 
     @addToClass(AST.IntNum)
     def printTree(self, indent=0):
@@ -139,19 +140,30 @@ class TreePrinter:
 
         self.vector.printTree(indent+1)
 
-    @addToClass(AST.Statement)
+    @addToClass(AST.PrintStatement)
     def printTree(self, indent=0):
         print("|  "*indent, end='')
-        print(self.statement)
+        print('PRINT')
+
+        self.expressions.printTree(indent+1)
+
+    @addToClass(AST.ReturnStatement)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print('RETURN')
 
         if self.expression:
             self.expression.printTree(indent+1)
 
-    @addToClass(AST.Error)
+    @addToClass(AST.JumpStatement)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print(self.statement.upper())
+
+    @addToClass(AST.Empty)
     def printTree(self, indent=0):
         pass
 
-        # fill in the body
-
-    # define printTree for other classes
-    # ...
+    @addToClass(AST.Error)
+    def printTree(self, indent=0):
+        pass

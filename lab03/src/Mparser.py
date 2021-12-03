@@ -29,6 +29,8 @@ def p_error(p):
     else:
         print("Unexpected end of input")
 
+    exit()
+
 
 def p_program(p):
     """program : instructions_opt"""
@@ -44,12 +46,12 @@ def p_empty(p):
 
 def p_instruction_opt_1(p):
     """instructions_opt : instructions """
-    p[0] = p[1]
+    p[0] = AST.Program(p[1])
 
 
 def p_instruction_opt_2(p):
     """instructions_opt : empty """
-    p[0] = p[1]
+    p[0] = AST.Program()
 
 
 def p_instructions(p):
@@ -131,7 +133,7 @@ def p_expression(p):
 def p_expression_2(p):
     """expression : ID
     """
-    p[0] = AST.Constant(p[1])
+    p[0] = AST.Variable(p[1])
 
 
 def p_expression_3(p):
@@ -173,7 +175,7 @@ def p_expression_unary(p):
     if p[1] == '-':
         p[0] = AST.UnaryExpr(p[1], p[2])
     elif p[2] == '\'':
-        p[0] = AST.UnaryExpr(p[2], p[1])
+        p[0] = AST.UnaryExpr('TRANSPOSE', p[1])
 
 
 def p_matrix_funcs(p):
@@ -280,7 +282,7 @@ def p_jump_statement(p):
         jump_statement : BREAK ';'
                         | CONTINUE ';'
     """
-    p[0] = AST.Statement(p[1])
+    p[0] = AST.JumpStatement(p[1])
 
 
 def p_return_statement(p):
@@ -290,9 +292,9 @@ def p_return_statement(p):
     """
 
     if len(p) == 3:
-        p[0] = AST.Statement(p[1])
+        p[0] = AST.ReturnStatement()
     else:
-        p[0] = AST.Statement(p[1], p[2])
+        p[0] = AST.ReturnStatement(p[2])
 
 
 def p_print_statement(p):
@@ -300,7 +302,7 @@ def p_print_statement(p):
         print_statement : PRINT expression_list ';'
     """
 
-    p[0] = AST.Statement(p[1], p[2])
+    p[0] = AST.PrintStatement(p[2])
 
 
 def p_expression_list(p):
@@ -332,12 +334,18 @@ def p_for_loop(p):
     p[0] = AST.ForLoop(AST.Variable(p[2]), p[4], p[6], p[7])
 
 
-def p_range_value(p):
+def p_range_value_int(p):
     """
-        range_value : DT_INTEGER 
-                    | ID                   
+        range_value : DT_INTEGER                   
     """
-    p[0] = AST.Constant(p[1])
+    p[0] = AST.IntNum(p[1])
+
+
+def p_range_value_id(p):
+    """
+        range_value : ID                   
+    """
+    p[0] = AST.Variable(p[1])
 
 
 parser = yacc.yacc()

@@ -16,9 +16,9 @@ class Node(object):
             self.next = []
 
 
-class Constant(Node):
-    def __init__(self, value):
-        self.value = value
+class Program(Node):
+    def __init__(self, instructions=None):
+        self.instructions = instructions
 
 
 class IntNum(Node):
@@ -108,9 +108,18 @@ class Vector(Node):
             self.values = [value]
 
 
-class Statement(Node):
-    def __init__(self, statement, expression=None):
+class JumpStatement(Node):
+    def __init__(self, statement):
         self.statement = statement
+
+
+class PrintStatement(Node):
+    def __init__(self, expressions):
+        self.expressions = expressions
+
+
+class ReturnStatement(Node):
+    def __init__(self, expression=None):
         self.expression = expression
 
 
