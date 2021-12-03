@@ -8,9 +8,9 @@ class VariableSymbol(Symbol):
     #
 
 
-class SymbolTable(object):
+class SymbolTable:
 
-    def __init__(self, parent, name): # parent scope and symbol table name
+    def __init__(self, parent=None, name='global'): # parent scope and symbol table name
         pass
     #
 
