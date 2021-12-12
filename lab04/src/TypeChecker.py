@@ -6,48 +6,21 @@ import SymbolTable as st
 numeric = {'int', 'float'}
 symbol_table = st.SymbolTable()
 
-ttype = {
-    '+': {
-        'int': {
-            'float': 'float',
-            'int': 'int'
-        },
-        'float': {
-            'float': 'float',
-            'int': 'float'
-        }
+std_operation_type_table = {
+    'int': {
+        'float': 'float',
+        'int': 'int'
     },
-    '-': {
-        'int': {
-            'float': 'float',
-            'int': 'int'
-        },
-        'float': {
-            'float': 'float',
-            'int': 'float'
-        }
-    },
-    '*': {
-        'int': {
-            'float': 'float',
-            'int': 'int'
-        },
-        'float': {
-            'float': 'float',
-            'int': 'float'
-        }
-    },
-    '/': {
-        'int': {
-            'float': 'float',
-            'int': 'int'
-        },
-        'float': {
-            'float': 'float',
-            'int': 'float'
-        }
+    'float': {
+        'float': 'float',
+        'int': 'float'
     }
 }
+
+type_table = {
+    op: std_operation_type_table for op in {'+', '-', '*', '/'}
+}
+
 
 class NodeVisitor(object):
 
