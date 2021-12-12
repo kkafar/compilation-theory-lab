@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
 import AST
-import SymbolTable from SymbolTable
+import SymbolTable as st
 
 numeric = {'int', 'float'}
-symbol_table = SymbolTable()
+symbol_table = st.SymbolTable()
 
 ttype = {
     '+': {
@@ -147,6 +147,7 @@ class TypeChecker(NodeVisitor):
         operand_t  = self.visit(node.operand)
 
         if operator == '-':
+            pass
 
         if operator == 'TRANSPOSE':
             if operand_t != 'vector':
