@@ -91,14 +91,14 @@ class TypeChecker(NodeVisitor):
             if type1 not in ['int', 'float'] or type2 not in ['int', 'float']:
                 print(f'{type1} {type2} not compatible with {op}')
             else:
-                return ttype[op][type1][type2]
+                return type_table[op][type1][type2]
                 
 
         if op in ['.+', '.-', '.*', './']:
             if type1 not in ['vector'] or type2 not in ['vector']:
                 print(f'{type1} {type2} not compatible with {op}')
             else:
-                return ttype[op][type1][type2]
+                return type_table[op][type1][type2]
 
     def visit_RelopExpr(self, node):
                                           # alternative usage,
