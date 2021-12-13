@@ -226,8 +226,14 @@ class TypeChecker(NodeVisitor):
 
     def visit_PrintStatement(self, node: AST.PrintStatement):
         print('PrintStatement')
-        # TODO @kkafar: Do we do anything here?
+        self.visit(node.expressions)
         return None
+
+    def visit_Expressions(self, node: AST.Expressions):
+        print('Expressions')
+        for expression in node.expressions:
+            self.visit(expression)
+
 
     def visit_ReturnStatement(self, node: AST.ReturnStatement):
         print('ReturnStatement')
