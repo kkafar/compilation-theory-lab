@@ -83,27 +83,32 @@ class TypeChecker(NodeVisitor):
         self.symbol_table = SymbolTable()
 
     def visit_Program(self, node: AST.Program):
+        print('Program')
         self.visit(node.instructions)
 
     def visit_Instructions(self, node: AST.Instructions):
+        print('Instructions')
         for instruction in node.instructions:
             self.visit(instruction)
 
     def visit_IntNum(self, node: AST.IntNum) -> Integer_t:
+        print('IntNum')
         return Integer_t
 
     def visit_FloatNum(self, node: AST.FloatNum) -> Float_t:
+        print('FloatNum')
         return Float_t
 
     def visit_StringValue(self, node: AST.StringValue) -> String_t:
+        print('StringValue')
         return String_t
 
     def visit_Variable(self, node: AST.Variable) -> Tuple[VariableName_t, Variable_t]:
-        # variable id, variable type
-        var_t = self.symbol_table.get(node.name)
-        return node.name, var_t
+        print('Variable')
+        return self.symbol_table.get(node.name).type
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
+        print('BinExpr')
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = node.op
@@ -124,6 +129,7 @@ class TypeChecker(NodeVisitor):
             print("TypeChecker error: BinExpr")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
+        print('RelopExpr')
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = node.op
@@ -136,6 +142,7 @@ class TypeChecker(NodeVisitor):
         return Bool_t
 
     def visit_UnaryExpr(self, node):
+        print('UnaryExpr')
         operator = node.operator
         operand_t = self.visit(node.operand)
 
@@ -152,25 +159,20 @@ class TypeChecker(NodeVisitor):
                 print('Invalid operand type for operator \'\'\'.')
 
     def visit_Assignment(self, node: AST.Assignment):
+        print('Assignment')
         op = node.op
-        left = self.visit(node.left)
-        if isinstance(left, tuple):
-            left_name, left_t = left[0], left[1]
-        else:
-            left_name, left_t = left, None
-
         right_t = self.visit(node.right)
 
-        # TODO (@kkafar): What if node.right is also variable (tuple is returned)?
-
         if op == '=':
-            self.symbol_table.put(left_name, VariableSymbol(left_name, right_t))
+            self.symbol_table.put(node.left.name, VariableSymbol(node.left.name, right_t))
         elif op in arithmetic_self_assign_ops:
             # TODO (@kkafar): We need to check here whether type of left side == type of right side
+            left_t = self.visit(node.left)
             if left_t != right_t:
                 print(f"Incompatible operands types for '{op}' operator.")
 
     def visit_Function(self, node: AST.Function):
+        print('Function')
         function_name = node.function
 
         # type & number of function arguments should be checked by scanner
@@ -184,6 +186,7 @@ class TypeChecker(NodeVisitor):
         return Matrix_t
 
     def visit_Conditional(self, node: AST.Conditional):
+        print('Conditional')
         self.symbol_table.push_scope(ScopeName.IF)
         self.visit(node.condition)
         self.visit(node.if_instruction)
@@ -194,10 +197,12 @@ class TypeChecker(NodeVisitor):
             self.symbol_table.pop_scope()
 
     def visit_Vector(self, node: AST.Vector):
+        print('Vector')
         # TODO @kkafar: Check if vector data type is checked by scanner
-        pass
+        return Vector_t
 
     def visit_JumpStatement(self, node: AST.JumpStatement):
+        print('JumpStatement')
         # break or continue
         # we need to make sure, we are in while / for scope!
 
@@ -217,15 +222,18 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_PrintStatement(self, node: AST.PrintStatement):
+        print('PrintStatement')
         # TODO @kkafar: Do we do anything here?
         return None
 
     def visit_ReturnStatement(self, node: AST.ReturnStatement):
+        print('ReturnStatement')
         if node.expression is not None:
             return self.visit(node.expression)
         return None
 
     def visit_WhileLoop(self, node: AST.WhileLoop):
+        print('WhileLoop')
         self.symbol_table.push_scope(ScopeName.WHILE)
 
         expression_t = self.visit(node.expression)
@@ -238,16 +246,36 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_ForLoop(self, node: AST.ForLoop):
+        print('ForLoop')
         self.symbol_table.push_scope(ScopeName.FOR)
+
         # we do not check for name shadowing
-        self.visit(node.variable)
+        # iterator = self.visit(node.variable)
+
         # these two below should be of Integer type
         # & we need to check for it, because if they were passed as ID
         # scanner did not verify their type
-        range_value_left_t = self.visit(node.range_value_left)
-        range_value_right_t = self.visit(node.range_value_right)
+        left = self.visit(node.range_value_left)
+        right = self.visit(node.range_value_right)
 
-        if range_value_left_t != Integer_t or range_value_right_t != Integer_t:
+        # iterator should be of Integer or Range/Slice type?
+        self.symbol_table.put(node.variable.name, VariableSymbol(node.variable.name, Integer_t))
+
+        # if isinstance(left, tuple):
+        #     range_value_left_name, range_value_left_t = left[0], left[1]
+        # else:
+        #     range_value_left_name, range_value_left_t = left, left
+        #
+        # if isinstance(right, tuple):
+        #     range_value_right_name, range_value_right_t = right[0], right[1]
+        # else:
+        #     range_value_right_name, range_value_right_t = right, right
+
+        # print('ForLoop: left_t', range_value_left_t)
+        # print('ForLoop: right_t', range_value_right_t)
+
+        print(left, right)
+        if left != Integer_t or right != Integer_t:
             print("Range boundary must be of integer type!")
 
 
@@ -256,4 +284,5 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_Slice(self, node: AST.Slice):
-        pass
+        print('Slice', node.name, self.visit(node.vector))
+        return node.name, self.visit(node.vector)
