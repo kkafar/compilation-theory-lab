@@ -22,3 +22,5 @@ lab*/*.md
 # ios specific
 .DS_Store
 
+# direnv
+.envrc
