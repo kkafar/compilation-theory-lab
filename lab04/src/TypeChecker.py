@@ -105,7 +105,10 @@ class TypeChecker(NodeVisitor):
 
     def visit_Variable(self, node: AST.Variable) -> Tuple[VariableName_t, Variable_t]:
         print('Variable')
-        return self.symbol_table.get(node.name).type
+        var_t = self.symbol_table.get(node.name)
+        if var_t is not None: return var_t.type
+        else:
+            print(f'Undefined variable: {node.name}')
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
         print('BinExpr')
@@ -260,19 +263,6 @@ class TypeChecker(NodeVisitor):
 
         # iterator should be of Integer or Range/Slice type?
         self.symbol_table.put(node.variable.name, VariableSymbol(node.variable.name, Integer_t))
-
-        # if isinstance(left, tuple):
-        #     range_value_left_name, range_value_left_t = left[0], left[1]
-        # else:
-        #     range_value_left_name, range_value_left_t = left, left
-        #
-        # if isinstance(right, tuple):
-        #     range_value_right_name, range_value_right_t = right[0], right[1]
-        # else:
-        #     range_value_right_name, range_value_right_t = right, right
-
-        # print('ForLoop: left_t', range_value_left_t)
-        # print('ForLoop: right_t', range_value_right_t)
 
         print(left, right)
         if left != Integer_t or right != Integer_t:
