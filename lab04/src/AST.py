@@ -166,9 +166,9 @@ class ForLoop(Node):
 
 
 class Slice(Node):
-    def __init__(self, matrix, vector):
+    def __init__(self, matrix_name, vector):
         super().__init__()
-        self.matrix = matrix
+        self.name = matrix_name
         self.vector = vector
 
 
