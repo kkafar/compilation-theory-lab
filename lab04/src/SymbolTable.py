@@ -47,10 +47,12 @@ class SymbolTable(object):
         return ScopeName.WHILE in self.__scope_name_stack or ScopeName.FOR in self.__scope_name_stack
 
     def push_scope(self, name: ScopeName):
+        print('push_scope', name.name)
         self.__scope_level += 1
         self.__scope_name_stack.append(name)
 
     def pop_scope(self):
+        print('pop_scope', self.get_tightest_scope_name().name)
         if self.__scope_level == 0:
             raise RuntimeError("Can not decrease scope!")
         self.__scope_name_stack.pop()
