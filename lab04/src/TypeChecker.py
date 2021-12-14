@@ -108,7 +108,7 @@ class TypeChecker(NodeVisitor):
         var_t = self.symbol_table.get(node.name)
         if var_t is not None: return var_t.type
         else:
-            print(f'Undefined variable: {node.name}')
+            print('At line:', node.lineno, '|', f'Undefined variable: {node.name}')
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
         print('BinExpr')
@@ -116,20 +116,21 @@ class TypeChecker(NodeVisitor):
         type2 = self.visit(node.right)
         op = node.op
 
-        if op in arithmetic_ops:
-            if type1 not in numeric_types or type2 not in numeric_types:
-                print(f'{type1} {type2} not compatible with {op}')
-            else:
-                return type_table[op][type1][type2]
+        if type1 is not None and type2 is not None:
+            if op in arithmetic_ops:
+                if type1 not in numeric_types or type2 not in numeric_types:
+                    print('At line:', node.lineno, '|', f'{type1} {type2} not compatible with {op}')
+                else:
+                    return type_table[op][type1][type2]
 
-        elif op in arithmetic_matrix_ops:
-            if type1 != Vector_t or type2 != Vector_t:
-                print(f'{type1} {type2} not compatible with {op}')
+            elif op in arithmetic_matrix_ops:
+                if type1 != Vector_t or type2 != Vector_t:
+                    print('At line:', node.lineno, '|', f'{type1} {type2} not compatible with {op}')
+                else:
+                    return type_table[op][type1][type2]
             else:
-                return type_table[op][type1][type2]
-        else:
-            # this should not happen
-            print("TypeChecker error: BinExpr")
+                # this should not happen
+                print("TypeChecker error: BinExpr")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
         print('RelopExpr')
@@ -137,8 +138,9 @@ class TypeChecker(NodeVisitor):
         type2 = self.visit(node.right)
         op = node.op
 
-        if type1 not in numeric_types or type2 not in numeric_types:
-            print(f'{type1} {type2} not comparable')
+        if type1 is not None and type2 is not None:
+            if type1 not in numeric_types or type2 not in numeric_types:
+                print('At line:', node.lineno, '|', f'{type1} {type2} not comparable')
 
         # TODO (@kkafar): Should we cover matrix case?
 
@@ -153,13 +155,13 @@ class TypeChecker(NodeVisitor):
             if operand_t in numeric_types:
                 return operand_t
             else:
-                print('Invalid operand type for operator \'-\'.')
+                print('At line:', node.lineno, '|', 'Invalid operand type for operator \'-\'.')
 
         if operator == 'TRANSPOSE':
             if operand_t == Vector_t:
                 return operand_t
             else:
-                print('Invalid operand type for operator \'\'\'.')
+                print('At line:', node.lineno, '|', 'Invalid operand type for operator \'\'\'.')
 
     def visit_Assignment(self, node: AST.Assignment):
         print('Assignment')
@@ -171,8 +173,8 @@ class TypeChecker(NodeVisitor):
         elif op in arithmetic_self_assign_ops:
             # TODO (@kkafar): We need to check here whether type of left side == type of right side
             left_t = self.visit(node.left)
-            if left_t != right_t:
-                print(f"Incompatible operands types for '{op}' operator.")
+            if left_t != right_t and left_t is not None:
+                print('At line:', node.lineno, '|', f"Incompatible operands types for '{op}' operator.")
 
     def visit_Function(self, node: AST.Function):
         print('Function')
@@ -180,9 +182,6 @@ class TypeChecker(NodeVisitor):
 
         # type & number of function arguments should be checked by scanner
         # TODO @kkafar: Check if the scanner really does that
-
-        if function_name not in function_names:
-            print(f"Unknown function name: {function_name}.")
 
         # TODO (@kkafar): Consider using Vector_t
         # All available functions return a matrix
@@ -211,7 +210,7 @@ class TypeChecker(NodeVisitor):
 
         # I think we do not have to check it, scanner already does
         if not self.symbol_table.is_in_loop_scope():
-            print('Jump statement NOT in loop scope.')
+            print('At line:', node.lineno, '|', 'Jump statement NOT in loop scope.')
 
         if node.statement == 'BREAK':
             # I think poping the scope in WhileLoop is enough?
@@ -219,8 +218,6 @@ class TypeChecker(NodeVisitor):
             pass
         elif node.statement == 'CONTINUE':
             pass
-        else:
-            print(f'Unknown jump statement: {node.statement}.')
 
         # no return
 
@@ -246,8 +243,8 @@ class TypeChecker(NodeVisitor):
         self.symbol_table.push_scope(ScopeName.WHILE)
 
         expression_t = self.visit(node.expression)
-        if expression_t != Bool_t:
-            print(f'WhileLoop expression must return Boolean, not {expression_t}.')
+        if expression_t != Bool_t and expression_t is not None:
+            print('At line:', node.expression.lineno, '|', f'WhileLoop expression must return Boolean, not {expression_t}.')
         if node.instruction is not None:
             self.visit(node.instruction)
 
@@ -271,8 +268,10 @@ class TypeChecker(NodeVisitor):
         self.symbol_table.put(node.variable.name, VariableSymbol(node.variable.name, Integer_t))
 
         print(left, right)
-        if left != Integer_t or right != Integer_t:
-            print("Range boundary must be of integer type!")
+        if left != Integer_t and left is not None:
+            print('At line:', node.range_value_left.lineno, '|', "Range boundary must be of integer type!")
+        if right != Integer_t and right is not None:
+            print('At line:', node.range_value_right.lineno, '|', "Range boundary must be of integer type!")
 
 
         self.visit(node.instruction)

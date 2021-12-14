@@ -106,6 +106,7 @@ def p_assignment(p):
     """
 
     p[0] = AST.Assignment(p[2], p[1], p[3])
+    p[0].lineno = p.lineno(2)
 
 
 def p_assign_id(p):
@@ -117,7 +118,7 @@ def p_assign_id(p):
         p[0] = AST.Variable(p[1])
     else:
         p[0] = AST.Slice(p[1], p[2])
-
+    
 
 def p_expression(p):
     """expression : expression_binop
@@ -134,6 +135,7 @@ def p_expression_2(p):
     """expression : ID
     """
     p[0] = AST.Variable(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_expression_3(p):
@@ -154,6 +156,7 @@ def p_expression_binop(p):
     """
 
     p[0] = AST.BinExpr(p[2], p[1], p[3])
+    p[0].lineno = p.lineno(2)
 
 
 def p_expression_relop(p):
@@ -165,6 +168,7 @@ def p_expression_relop(p):
                 | expression RELOP_NE expression
     """
     p[0] = AST.RelopExpr(p[2], p[1], p[3])
+    p[0].lineno = p.lineno(2)
 
 
 def p_expression_unary(p):
@@ -174,8 +178,10 @@ def p_expression_unary(p):
 
     if p[1] == '-':
         p[0] = AST.UnaryExpr(p[1], p[2])
+        p[0].lineno = p.lineno(1)
     elif p[2] == '\'':
         p[0] = AST.UnaryExpr('TRANSPOSE', p[1])
+        p[0].lineno = p.lineno(2)
 
 
 def p_matrix_funcs(p):
@@ -187,6 +193,7 @@ def p_matrix_funcs(p):
     """
 
     p[0] = AST.Function(p[1], p[3])
+    p[0].lineno = p.lineno(1)
 
 
 def p_constant(p):
@@ -201,6 +208,7 @@ def p_constant_str(p):
         constant : DT_STRING
     """
     p[0] = AST.StringValue(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_matrix(p):
@@ -209,12 +217,14 @@ def p_matrix(p):
 
     """
     p[0] = p[2]
+    p[0].lineno = p.lineno(2)
 
 
 def p_vectors(p):
     """ vectors : vector 
     """
     p[0] = AST.Vector(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_vectors_2(p):
@@ -222,6 +232,7 @@ def p_vectors_2(p):
     """
     p[0] = p[1]
     p[0].values += [p[3]]
+    p[0].lineno = p.lineno(1)
 
 
 def p_vector(p):
@@ -232,8 +243,10 @@ def p_vector(p):
 
     if len(p) == 4:
         p[0] = p[2]
+        p[0].lineno = p.lineno(2)
     else:
         p[0] = AST.Vector()
+        p[0].lineno = p.lineno(1)
 
 
 def p_numbers(p):
@@ -248,6 +261,8 @@ def p_numbers(p):
     else:
         p[0] = AST.Vector(p[1])
 
+    p[0].lineno = p.lineno(1)
+
 
 def p_number_int(p):
     """
@@ -255,6 +270,7 @@ def p_number_int(p):
     """
 
     p[0] = AST.IntNum(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_number_float(p):
@@ -263,6 +279,7 @@ def p_number_float(p):
     """
 
     p[0] = AST.FloatNum(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_conditional_statement(p):
@@ -283,6 +300,7 @@ def p_jump_statement(p):
                         | CONTINUE ';'
     """
     p[0] = AST.JumpStatement(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_return_statement(p):
@@ -295,6 +313,9 @@ def p_return_statement(p):
         p[0] = AST.ReturnStatement()
     else:
         p[0] = AST.ReturnStatement(p[2])
+    
+    p[0].lineno = p.lineno(1)
+
 
 
 def p_print_statement(p):
@@ -339,6 +360,7 @@ def p_range_value_int(p):
         range_value : DT_INTEGER                   
     """
     p[0] = AST.IntNum(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 def p_range_value_id(p):
@@ -346,6 +368,7 @@ def p_range_value_id(p):
         range_value : ID                   
     """
     p[0] = AST.Variable(p[1])
+    p[0].lineno = p.lineno(1)
 
 
 parser = yacc.yacc()
