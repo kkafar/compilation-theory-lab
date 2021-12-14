@@ -119,20 +119,45 @@ class TypeChecker(NodeVisitor):
         type2 = self.visit(node.right)
         op = node.op
 
+        if isinstance(type1, Tuple):
+            type1, dims1 = type1
+
+        if isinstance(type2, Tuple):
+            type2, dims2 = type2
+
         if type1 is not None and type2 is not None:
             if op in arithmetic_ops:
-                if type1 not in numeric_types or type2 not in numeric_types:
+
+                if type1 == Matrix_t or type2 == Matrix_t:
+                    if type1 != type2 or op == '/':
+                        print('At line:', node.lineno, '|',
+                              f'{type1} {type2} not compatible with {op}')
+                    elif op in {'+', '-'}:
+                        if dims1 != dims2:
+                            print('At line:', node.lineno, '|',
+                                  f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
+                        else:
+                            return Matrix_t, dims1
+                    elif op == '*':
+                        if dims1[1] != dims2[0]:
+                            print('At line:', node.lineno, '|',
+                                  f'Cannot use {op} with matrices of incompatible shapes ({dims1} and {dims2})')
+                        else:
+                            return Matrix_t, (dims1[0], dims2[1])
+
+                elif type1 not in numeric_types or type2 not in numeric_types:
                     print('At line:', node.lineno, '|',
                           f'{type1} {type2} not compatible with {op}')
                 else:
                     return type_table[op][type1][type2]
 
             elif op in arithmetic_matrix_ops:
-                if type1 != Vector_t or type2 != Vector_t:
+                if type1 != Matrix_t or type2 != Matrix_t:
                     print('At line:', node.lineno, '|',
                           f'{type1} {type2} not compatible with {op}')
-                else:
-                    return type_table[op][type1][type2]
+                elif dims1 != dims2:
+                    print('At line:', node.lineno, '|',
+                          f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
             else:
                 # this should not happen
                 print("TypeChecker error: BinExpr")
@@ -163,14 +188,15 @@ class TypeChecker(NodeVisitor):
 
         if operator == '-':
             if operand_t in numeric_types:
+                node.value = -node.operand.value
                 return operand_t
             else:
                 print('At line:', node.lineno, '|',
                       'Invalid operand type for operator \'-\'.')
 
         if operator == 'TRANSPOSE':
-            if operand_t == Vector_t:
-                return operand_t
+            if isinstance(operand_t, Tuple) and operand_t[0] == Matrix_t:
+                return Matrix_t, (operand_t[1][1], operand_t[1][0])
             else:
                 print('At line:', node.lineno, '|',
                       'Invalid operand type for operator \'\'\'.')
@@ -200,14 +226,17 @@ class TypeChecker(NodeVisitor):
             print('At line:', node.lineno, '|',
                   f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
 
+        dims = [None, None]
         for i, arg_type in enumerate(arg_types):
             if arg_type and arg_type != Integer_t:
                 print('At line:', node.lineno, '|',
                       f"Argument #{i} must be Integer, not {arg_type}")
+            else:
+                dims[i] = node.arguments.expressions[i].value
 
         # TODO (@kkafar): Consider using Vector_t
         # All available functions return a matrix
-        return Matrix_t
+        return Matrix_t, tuple(dims)
 
     def visit_Conditional(self, node: AST.Conditional):
         # print('Conditional')
@@ -238,7 +267,7 @@ class TypeChecker(NodeVisitor):
                 y_dim = vector_len
             elif y_dim != vector_len:
                 print('At line:', node.lineno, '|',
-                  f"Matrix initialized with vectors of different lengths")
+                      f"Matrix initialized with vectors of different lengths")
                 break
 
         return Matrix_t, (x_dim, y_dim)
