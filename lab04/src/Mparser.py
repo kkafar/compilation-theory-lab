@@ -219,13 +219,13 @@ def p_matrix(p):
 
     """
     p[0] = p[2]
-    p[0].lineno = p.lineno(2)
+    p[0].lineno = p.lineno(1)
 
 
 def p_vectors(p):
     """ vectors : vector 
     """
-    p[0] = AST.Vector(p[1])
+    p[0] = AST.Matrix(p[1])
     p[0].lineno = p.lineno(1)
 
 
@@ -233,7 +233,7 @@ def p_vectors_2(p):
     """ vectors : vectors ',' vector
     """
     p[0] = p[1]
-    p[0].values += [p[3]]
+    p[0].vectors += [p[3]]
     p[0].lineno = p.lineno(1)
 
 

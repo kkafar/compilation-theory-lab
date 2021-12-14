@@ -115,12 +115,18 @@ class Conditional(Node):
 
 class Vector(Node):
     def __init__(self, value=None):
-        super().__init__()
         if value is None:
             self.values = []
         else:
             self.values = [value]
 
+class Matrix(Node):
+    def __init__(self, vector=None):
+        super().__init__()
+        if vector is None:
+            self.vectors = []
+        else:
+            self.vectors = [vector]
 
 class JumpStatement(Node):
     def __init__(self, statement):

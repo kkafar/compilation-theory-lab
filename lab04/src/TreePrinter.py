@@ -129,6 +129,15 @@ class TreePrinter:
         for value in self.values:
             value.printTree(indent+1)
 
+    @addToClass(AST.Matrix)
+    def printTree(self, indent=0):
+        print("|  "*indent, end='')
+        print('MATRIX')
+
+        for vector in self.vectors:
+            vector.printTree(indent+1)
+
+
     @addToClass(AST.Slice)
     def printTree(self, indent=0):
         print("|  "*indent, end='')

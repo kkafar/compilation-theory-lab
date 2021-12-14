@@ -223,7 +223,25 @@ class TypeChecker(NodeVisitor):
     def visit_Vector(self, node: AST.Vector):
         # print('Vector')
         # TODO @kkafar: Check if vector data type is checked by scanner
-        return Vector_t
+        return Vector_t, len(node.values)
+
+    def visit_Matrix(self, node: AST.Matrix):
+        # print('Vector')
+        # TODO @kkafar: Check if vector data type is checked by scanner
+
+        x_dim = len(node.vectors)
+        y_dim = None
+
+        for vector in node.vectors:
+            vector_len = self.visit(vector)[1]
+            if y_dim is None:
+                y_dim = vector_len
+            elif y_dim != vector_len:
+                print('At line:', node.lineno, '|',
+                  f"Matrix initialized with vectors of different lengths")
+                break
+
+        return Matrix_t, (x_dim, y_dim)
 
     def visit_JumpStatement(self, node: AST.JumpStatement):
         # print('JumpStatement')
