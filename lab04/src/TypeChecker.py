@@ -150,10 +150,10 @@ class TypeChecker(NodeVisitor):
                         print('At line:', node.lineno, '|',
                               f'{type1} {type2} not compatible with {op}')
                     elif dims1 != dims2:
-                        print('At line:', node.lineno, '|', f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
+                        print('At line:', node.lineno, '|',
+                              f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
                     else:
                         return Vector_t, dims1
-
 
                 elif type1 not in numeric_types or type2 not in numeric_types:
                     print('At line:', node.lineno, '|',
@@ -217,12 +217,25 @@ class TypeChecker(NodeVisitor):
         right_t = self.visit(node.right)
 
         if op == '=':
-            self.symbol_table.put(
-                node.left.name, VariableSymbol(node.left.name, right_t))
+            if isinstance(node.left, AST.Slice):
+                left_t = self.visit(node.left)
+                if right_t not in numeric_types:
+                    print('At line:', node.lineno, '|',
+                          f"Cannot assign {right_t} to a {left_t[0]} cell")
+            else:
+                self.symbol_table.put(
+                    node.left.name, VariableSymbol(node.left.name, right_t))
         elif op in arithmetic_self_assign_ops:
             # TODO (@kkafar): We need to check here whether type of left side == type of right side
+
             left_t = self.visit(node.left)
-            if left_t != right_t and left_t is not None:
+
+            if isinstance(node.left, AST.Slice):
+                if right_t not in numeric_types:
+                    print('At line:', node.lineno, '|',
+                          f"Cannot assign {right_t} to a {left_t[0]} cell")
+
+            elif left_t != right_t and left_t is not None:
                 print('At line:', node.lineno, '|',
                       f"Incompatible operands types for '{op}' operator.")
 
@@ -265,9 +278,7 @@ class TypeChecker(NodeVisitor):
         return Vector_t, len(node.values)
 
     def visit_Matrix(self, node: AST.Matrix):
-        # print('Vector')
-        # TODO @kkafar: Check if vector data type is checked by scanner
-
+        # print('Matrix')
         x_dim = len(node.vectors)
         y_dim = None
 
@@ -278,7 +289,7 @@ class TypeChecker(NodeVisitor):
             elif y_dim != vector_len:
                 print('At line:', node.lineno, '|',
                       f"Matrix initialized with vectors of different lengths")
-                break
+                return Matrix_t, (x_dim, None)
 
         return Matrix_t, (x_dim, y_dim)
 
@@ -366,5 +377,56 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_Slice(self, node: AST.Slice):
-        # print('Slice', node.name, self.visit(node.vector))
-        return node.name, self.visit(node.vector)
+        symbol = self.symbol_table.get(node.name)
+        indices = self.visit(node.vector)
+
+        # matrix
+        if not isinstance(symbol.type, Tuple):
+            print('At line:', node.lineno,
+                  '|', f"{symbol.type} is not subscriptable")
+            return
+
+        symbol_type = symbol.type[0]
+        dims = symbol.type[1]
+
+        if symbol_type == Matrix_t:
+            if len(indices) != 2 and isinstance(dims, Tuple) and len(dims) == 2:
+                print('At line:', node.lineno,
+                      '|', f"Provided {len(indices)} {'index' if len(indices) == 1 else 'indices'}, 2 required")
+            else:
+                for i in range(2):
+                    if indices[i] and dims[i] and (indices[i] < 0 or indices[i] >= dims[i]):
+                        print('At line:', node.lineno, '|',
+                              f"Index {indices[i]} is out of range for matrix {symbol.name} with shape {dims} at axis {i}")
+
+        # vector
+        elif symbol_type == Vector_t:
+            if len(indices) != 1:
+                print('At line:', node.lineno, '|',
+                      f"Provided {len(indices)} indices for vector {symbol.name}, 1 required")
+            elif indices[0] and dims and (indices[0] < 0 or indices[0] >= dims):
+                print('At line:', node.lineno, '|',
+                      f"Index {indices[0]} is out of range for vector with length {dims}")
+
+        else:
+            print('At line:', node.lineno,
+                  '|', f"{symbol.type} is not subscritable")
+
+        return symbol_type, dims
+
+    def visit_SliceVector(self, node: AST.SliceVector):
+        '''
+            returns list of indices in slice_vector
+            if index isn't a constant Integer, then it's of NoneType in the list
+        '''
+        indices = [None]*len(node.values)
+        for i, value in enumerate(node.values):
+            value_type = self.visit(value)
+            if value_type == Integer_t:
+                if isinstance(value, AST.IntNum):
+                    indices[i] = value.value
+            else:
+                print('At line:', node.lineno,
+                      '|', f"{value_type} cannot be used as an index for a matrix or vector")
+
+        return indices

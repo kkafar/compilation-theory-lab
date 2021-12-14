@@ -114,13 +114,23 @@ def p_assignment(p):
 def p_assign_id(p):
     """
         assign_id : ID
-                  | ID vector
+                  | ID slice_vector
     """
     if len(p) == 2:
         p[0] = AST.Variable(p[1])
     else:
         p[0] = AST.Slice(p[1], p[2])
-    
+
+    p[0].lineno = p.lineno(1)
+
+
+def p_slice_vector(p):
+    '''
+        slice_vector : '[' expression_list ']'
+    '''
+    p[0] = AST.SliceVector(p[2].expressions)
+    p[0].lineno = p.lineno(2)
+
 
 def p_expression(p):
     """expression : expression_binop
@@ -316,9 +326,8 @@ def p_return_statement(p):
         p[0] = AST.ReturnStatement()
     else:
         p[0] = AST.ReturnStatement(p[2])
-    
-    p[0].lineno = p.lineno(1)
 
+    p[0].lineno = p.lineno(1)
 
 
 def p_print_statement(p):
