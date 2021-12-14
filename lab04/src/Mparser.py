@@ -129,6 +129,7 @@ def p_expression(p):
                   | matrix_funcs
                   | constant
                   | matrix
+                  | vector
     """
     p[0] = p[1]
 

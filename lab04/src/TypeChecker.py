@@ -145,6 +145,16 @@ class TypeChecker(NodeVisitor):
                         else:
                             return Matrix_t, (dims1[0], dims2[1])
 
+                if type1 == Vector_t or type2 == Vector_t:
+                    if type1 != type2 or op == '/':
+                        print('At line:', node.lineno, '|',
+                              f'{type1} {type2} not compatible with {op}')
+                    elif dims1 != dims2:
+                        print('At line:', node.lineno, '|', f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
+                    else:
+                        return Vector_t, dims1
+
+
                 elif type1 not in numeric_types or type2 not in numeric_types:
                     print('At line:', node.lineno, '|',
                           f'{type1} {type2} not compatible with {op}')
