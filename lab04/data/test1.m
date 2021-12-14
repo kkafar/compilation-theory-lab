@@ -13,15 +13,19 @@ for i = 1:N {
 M = 3.5;
 
 while(M) {
-    if(k<5)
+    if(N == 's'){
         i = 1;
-    else if(k<10)
+        break;
+    }
+    else if(3 > 2)
         i = 2;   
     else
         i = 3;
     
     k = k - 1;
 }
+
+break;
 
 
 A = zeros(3.5);  
