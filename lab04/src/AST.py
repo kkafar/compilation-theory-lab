@@ -99,10 +99,10 @@ class Assignment(Node):
 
 
 class Function(Node):
-    def __init__(self, function, expressions):
+    def __init__(self, function, arguments):
         super().__init__()
         self.function = function
-        self.expressions = expressions
+        self.arguments = arguments
 
 
 class Conditional(Node):

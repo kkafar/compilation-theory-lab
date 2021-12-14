@@ -2,6 +2,7 @@
 import sys
 import Mparser
 import scanner
+from TreePrinter import TreePrinter
 from TypeChecker import TypeChecker
 
 if __name__ == '__main__':
@@ -21,4 +22,7 @@ if __name__ == '__main__':
     # Below code shows how to use visitor
     typeChecker = TypeChecker()   
     typeChecker.visit(ast)   # or alternatively ast.accept(typeChecker)
+
+    # if not Mparser.error_flag:
+    #     ast.printTree()
     

@@ -12,7 +12,6 @@ def addToClass(cls):
 
 class TreePrinter:
 
-
     @addToClass(AST.Program)
     def printTree(self, indent=0):
         if self.instructions:
@@ -79,7 +78,7 @@ class TreePrinter:
         print("|  "*indent, end='')
         print(self.function)
 
-        self.expressions.printTree(indent+1)
+        self.arguments.printTree(indent+1)
 
     @addToClass(AST.Conditional)
     def printTree(self, indent=0):
@@ -136,7 +135,7 @@ class TreePrinter:
         print('REF')
 
         print("|  "*(indent+1), end='')
-        print(self.matrix)
+        print(self.name)
 
         self.vector.printTree(indent+1)
 

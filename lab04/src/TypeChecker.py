@@ -83,35 +83,35 @@ class TypeChecker(NodeVisitor):
         self.symbol_table = SymbolTable()
 
     def visit_Program(self, node: AST.Program):
-        print('Program')
+        # print('Program')
         self.visit(node.instructions)
 
     def visit_Instructions(self, node: AST.Instructions):
-        print('Instructions')
+        # print('Instructions')
         for instruction in node.instructions:
             self.visit(instruction)
 
     def visit_IntNum(self, node: AST.IntNum) -> Integer_t:
-        print('IntNum')
+        # print('IntNum')
         return Integer_t
 
     def visit_FloatNum(self, node: AST.FloatNum) -> Float_t:
-        print('FloatNum')
+        # print('FloatNum')
         return Float_t
 
     def visit_StringValue(self, node: AST.StringValue) -> String_t:
-        print('StringValue')
+        # print('StringValue')
         return String_t
 
     def visit_Variable(self, node: AST.Variable) -> Tuple[VariableName_t, Variable_t]:
-        print('Variable')
+        # print('Variable')
         var_t = self.symbol_table.get(node.name)
         if var_t is not None: return var_t.type
         else:
             print('At line:', node.lineno, '|', f'Undefined variable: {node.name}')
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
-        print('BinExpr')
+        # print('BinExpr')
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = node.op
@@ -133,7 +133,7 @@ class TypeChecker(NodeVisitor):
                 print("TypeChecker error: BinExpr")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
-        print('RelopExpr')
+        # print('RelopExpr')
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = node.op
@@ -147,7 +147,7 @@ class TypeChecker(NodeVisitor):
         return Bool_t
 
     def visit_UnaryExpr(self, node):
-        print('UnaryExpr')
+        # print('UnaryExpr')
         operator = node.operator
         operand_t = self.visit(node.operand)
 
@@ -164,7 +164,7 @@ class TypeChecker(NodeVisitor):
                 print('At line:', node.lineno, '|', 'Invalid operand type for operator \'\'\'.')
 
     def visit_Assignment(self, node: AST.Assignment):
-        print('Assignment')
+        # print('Assignment')
         op = node.op
         right_t = self.visit(node.right)
 
@@ -177,18 +177,25 @@ class TypeChecker(NodeVisitor):
                 print('At line:', node.lineno, '|', f"Incompatible operands types for '{op}' operator.")
 
     def visit_Function(self, node: AST.Function):
-        print('Function')
+        # print('Function')
         function_name = node.function
 
-        # type & number of function arguments should be checked by scanner
-        # TODO @kkafar: Check if the scanner really does that
+        arg_types = self.visit(node.arguments)
+
+        if len(arg_types) > 2:
+            print('At line:', node.lineno, '|', f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
+
+        for i, arg_type in enumerate(arg_types):
+            if arg_type and arg_type != Integer_t:
+                print('At line:', node.lineno, '|', f"Argument #{i} must be Integer, not {arg_type}")
+
 
         # TODO (@kkafar): Consider using Vector_t
         # All available functions return a matrix
         return Matrix_t
 
     def visit_Conditional(self, node: AST.Conditional):
-        print('Conditional')
+        # print('Conditional')
         self.symbol_table.push_scope(ScopeName.IF)
         self.visit(node.condition)
         self.visit(node.if_instruction)
@@ -199,12 +206,12 @@ class TypeChecker(NodeVisitor):
             self.symbol_table.pop_scope()
 
     def visit_Vector(self, node: AST.Vector):
-        print('Vector')
+        # print('Vector')
         # TODO @kkafar: Check if vector data type is checked by scanner
         return Vector_t
 
     def visit_JumpStatement(self, node: AST.JumpStatement):
-        print('JumpStatement')
+        # print('JumpStatement')
         # break or continue
         # we need to make sure, we are in while / for scope!
 
@@ -222,24 +229,29 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_PrintStatement(self, node: AST.PrintStatement):
-        print('PrintStatement')
+        # print('PrintStatement')
         self.visit(node.expressions)
         return None
 
     def visit_Expressions(self, node: AST.Expressions):
-        print('Expressions')
+        # print('Expressions')
+
+        types = []
+
         for expression in node.expressions:
-            self.visit(expression)
+            types.append(self.visit(expression))
+        
+        return types        
 
 
     def visit_ReturnStatement(self, node: AST.ReturnStatement):
-        print('ReturnStatement')
+        # print('ReturnStatement')
         if node.expression is not None:
             return self.visit(node.expression)
         return None
 
     def visit_WhileLoop(self, node: AST.WhileLoop):
-        print('WhileLoop')
+        # print('WhileLoop')
         self.symbol_table.push_scope(ScopeName.WHILE)
 
         expression_t = self.visit(node.expression)
@@ -252,7 +264,7 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_ForLoop(self, node: AST.ForLoop):
-        print('ForLoop')
+        # print('ForLoop')
         self.symbol_table.push_scope(ScopeName.FOR)
 
         # we do not check for name shadowing
@@ -267,7 +279,7 @@ class TypeChecker(NodeVisitor):
         # iterator should be of Integer or Range/Slice type?
         self.symbol_table.put(node.variable.name, VariableSymbol(node.variable.name, Integer_t))
 
-        print(left, right)
+        # print(left, right)
         if left != Integer_t and left is not None:
             print('At line:', node.range_value_left.lineno, '|', "Range boundary must be of integer type!")
         if right != Integer_t and right is not None:
@@ -279,5 +291,5 @@ class TypeChecker(NodeVisitor):
         # no return
 
     def visit_Slice(self, node: AST.Slice):
-        print('Slice', node.name, self.visit(node.vector))
+        # print('Slice', node.name, self.visit(node.vector))
         return node.name, self.visit(node.vector)

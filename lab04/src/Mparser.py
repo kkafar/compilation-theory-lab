@@ -4,6 +4,7 @@ import scanner
 import ply.yacc as yacc
 import AST
 
+error_flag = False
 
 tokens = scanner.tokens
 
@@ -29,7 +30,8 @@ def p_error(p):
     else:
         print("Unexpected end of input")
 
-    exit()
+    global error_flag
+    error_flag = True
 
 
 def p_program(p):

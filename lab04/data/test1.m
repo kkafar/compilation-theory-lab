@@ -1,5 +1,3 @@
-# special functions, initializations
-
 print 1+'b', 'a';
 
 return x+x;
@@ -26,9 +24,9 @@ while(M) {
 }
 
 
-A = zeros(5);  # create 5x5 matrix filled with zeros
-B = ones(7);   # create 7x7 matrix filled with ones
-I = eye(10);   # create 10x10 matrix filled with ones on diagonal and zeros elsewhere
+A = zeros(3.5);  
+B = ones('a', 2>2); 
+I = eye(-1);
 
 E1 = [ [ 1, 2, 3],
        [ 4, 5, 6],
