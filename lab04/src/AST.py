@@ -4,6 +4,7 @@ class Node(object):
     def __init__(self, children=None):
         self.ID = str(Node.count)
         Node.count += 1
+        self.lineno = None
 
         if not children:
             self.children = []
