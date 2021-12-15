@@ -52,6 +52,15 @@ type_table = {
 }
 
 
+def log_type_error(line, error_message):
+    print(f"At line: {line} | {error_message}.")
+
+
+def log_type_checker_error(line, error_message):
+    log_type_error(line, "TypeChecker error: " + error_message)
+
+
+
 class NodeVisitor(object):
 
     def visit(self, node: AST.Node) -> VisitReturn_t:
@@ -104,8 +113,7 @@ class TypeChecker(NodeVisitor):
         if var_t is not None:
             return var_t.type
         else:
-            print('At line:', node.lineno, '|',
-                  f'Undefined variable: {node.name}')
+            log_type_error(node.lineno, f'Undefined variable: {node.name}')
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
         type1 = self.visit(node.left)
@@ -120,50 +128,45 @@ class TypeChecker(NodeVisitor):
 
         if type1 is not None and type2 is not None:
             if op in arithmetic_ops:
-
                 if type1 == Matrix_t or type2 == Matrix_t:
                     if type1 != type2 or op == '/':
-                        print('At line:', node.lineno, '|',
-                              f'{type1} {type2} not compatible with {op}')
+                        log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
                     elif op in {'+', '-'}:
                         if dims1 != dims2:
-                            print('At line:', node.lineno, '|',
-                                  f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
+                            log_type_error(node.lineno,
+                                           f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
                         else:
                             return Matrix_t, dims1
                     elif op == '*':
                         if dims1[1] != dims2[0]:
-                            print('At line:', node.lineno, '|',
-                                  f'Cannot use {op} with matrices of incompatible shapes ({dims1} and {dims2})')
+                            log_type_error(node.lineno,
+                                           f'Cannot use {op} with matrices of incompatible shapes ({dims1} and {dims2})')
                         else:
                             return Matrix_t, (dims1[0], dims2[1])
 
                 if type1 == Vector_t or type2 == Vector_t:
                     if type1 != type2 or op == '/':
-                        print('At line:', node.lineno, '|',
-                              f'{type1} {type2} not compatible with {op}')
+                        log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
                     elif dims1 != dims2:
-                        print('At line:', node.lineno, '|',
-                              f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
+                        log_type_error(node.lineno,
+                                       f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
                     else:
                         return Vector_t, dims1
 
                 elif type1 not in numeric_types or type2 not in numeric_types:
-                    print('At line:', node.lineno, '|',
-                          f'{type1} {type2} not compatible with {op}')
+                    log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
                 else:
                     return type_table[op][type1][type2]
 
             elif op in arithmetic_matrix_ops:
                 if type1 != Matrix_t or type2 != Matrix_t:
-                    print('At line:', node.lineno, '|',
-                          f'{type1} {type2} not compatible with {op}')
+                    log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
                 elif dims1 != dims2:
-                    print('At line:', node.lineno, '|',
-                          f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
+                    log_type_error(node.lineno, f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
             else:
-                # this should not happen
-                print("TypeChecker error: BinExpr")
+                log_type_checker_error("BinExpr: Unhandled arithmetic operation?!")
+        else:
+            log_type_checker_error(node.lineno, "BinExpr: type1 or type2 is None")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
         type1 = self.visit(node.left)
@@ -173,11 +176,9 @@ class TypeChecker(NodeVisitor):
         if type1 is not None and type2 is not None:
             if type1 == String_t or type2 == String_t:
                 if type1 != type2:
-                    print('At line:', node.lineno, '|',
-                          f'{type1} {type2} not comparable')
+                    log_type_error(node.lineno, f'{type1} {type2} not comparable')
             elif type1 not in numeric_types or type2 not in numeric_types:
-                print('At line:', node.lineno, '|',
-                      f'{type1} {type2} not comparable')
+                log_type_error(node.lineno, f'{type1} {type2} not comparable')
 
         # TODO (@kkafar): Should we cover matrix case?
 
@@ -192,15 +193,13 @@ class TypeChecker(NodeVisitor):
                 node.value = -node.operand.value
                 return operand_t
             else:
-                print('At line:', node.lineno, '|',
-                      'Invalid operand type for operator \'-\'.')
+                log_type_error(node.lineno, f'Invalid operand type for operator \'-\'')
 
         if operator == 'TRANSPOSE':
             if isinstance(operand_t, Tuple) and operand_t[0] == Matrix_t:
                 return Matrix_t, (operand_t[1][1], operand_t[1][0])
             else:
-                print('At line:', node.lineno, '|',
-                      'Invalid operand type for operator \'\'\'.')
+                log_type_error(node.lineno, f'Invalid operand type for operator \'\'\'')
 
     def visit_Assignment(self, node: AST.Assignment):
         op = node.op
@@ -210,8 +209,7 @@ class TypeChecker(NodeVisitor):
             if isinstance(node.left, AST.Slice):
                 left_t = self.visit(node.left)
                 if right_t not in numeric_types:
-                    print('At line:', node.lineno, '|',
-                          f"Cannot assign {right_t} to a {left_t[0]} cell")
+                    log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
             else:
                 self.symbol_table.put(
                     node.left.name, VariableSymbol(node.left.name, right_t))
@@ -222,12 +220,10 @@ class TypeChecker(NodeVisitor):
 
             if isinstance(node.left, AST.Slice):
                 if right_t not in numeric_types:
-                    print('At line:', node.lineno, '|',
-                          f"Cannot assign {right_t} to a {left_t[0]} cell")
+                    log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
 
             elif left_t != right_t and left_t is not None:
-                print('At line:', node.lineno, '|',
-                      f"Incompatible operands types for '{op}' operator.")
+                log_type_error(node.lineno, f"Incompatible operands types for '{op}' operator")
 
     def visit_Function(self, node: AST.Function):
         function_name = node.function
@@ -235,14 +231,12 @@ class TypeChecker(NodeVisitor):
         arg_types = self.visit(node.arguments)
 
         if len(arg_types) > 2:
-            print('At line:', node.lineno, '|',
-                  f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
+            log_type_error(node.lineno, f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
 
         dims = [None, None]
         for i, arg_type in enumerate(arg_types):
             if arg_type and arg_type != Integer_t:
-                print('At line:', node.lineno, '|',
-                      f"Argument #{i} must be Integer, not {arg_type}")
+                log_type_error(node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
             else:
                 dims[i] = node.arguments.expressions[i].value
 
@@ -273,8 +267,7 @@ class TypeChecker(NodeVisitor):
             if y_dim is None:
                 y_dim = vector_len
             elif y_dim != vector_len:
-                print('At line:', node.lineno, '|',
-                      f"Matrix initialized with vectors of different lengths")
+                log_type_error(node.lineno, f"Matrix initialized with vectors of different lengths")
                 return Matrix_t, (x_dim, None)
 
         return Matrix_t, (x_dim, y_dim)
@@ -285,15 +278,10 @@ class TypeChecker(NodeVisitor):
 
         # I think we do not have to check it, scanner already does
         if not self.symbol_table.is_in_loop_scope():
-            print('At line:', node.lineno, '|',
-                  'Jump statement NOT in loop scope.')
+            log_type_error(node.lineno, f'Jump statement NOT in loop scope')
 
-        if node.statement == 'BREAK':
-            # I think poping the scope in WhileLoop is enough?
-            # self.symbol_table.pop_scope()
-            pass
-        elif node.statement == 'CONTINUE':
-            pass
+        if node.statement not in {'BREAK', 'CONTINUE'}:
+            log_type_checker_error(node.lineno, f'Unhandled JumpStatement')
 
         # no return
 
@@ -319,8 +307,8 @@ class TypeChecker(NodeVisitor):
 
         expression_t = self.visit(node.expression)
         if expression_t != Bool_t and expression_t is not None:
-            print('At line:', node.expression.lineno, '|',
-                  f'WhileLoop expression must return Bool, not {expression_t}.')
+            log_type_error(node.lineno, f'WhileLoop expression must return Bool, not {expression_t}')
+
         if node.instruction is not None:
             self.visit(node.instruction)
 
@@ -344,11 +332,9 @@ class TypeChecker(NodeVisitor):
             node.variable.name, Integer_t))
 
         if left != Integer_t and left is not None:
-            print('At line:', node.range_value_left.lineno,
-                  '|', "Range boundary must be of integer type")
+            log_type_error(node.lineno, f"Left range boundary must be of integer type, not {left}")
         if right != Integer_t and right is not None:
-            print('At line:', node.range_value_right.lineno,
-                  '|', "Range boundary must be of integer type")
+            log_type_error(node.lineno, f"Right range boundary must be of integer type, not {right}")
 
         self.visit(node.instruction)
         self.symbol_table.pop_scope()
@@ -360,8 +346,7 @@ class TypeChecker(NodeVisitor):
 
         # matrix
         if not isinstance(symbol.type, Tuple):
-            print('At line:', node.lineno,
-                  '|', f"{symbol.type} is not subscriptable")
+            log_type_error(node.lineno, f"{symbol.type} is not subscriptable")
             return
 
         symbol_type = symbol.type[0]
@@ -369,26 +354,23 @@ class TypeChecker(NodeVisitor):
 
         if symbol_type == Matrix_t:
             if len(indices) != 2 and isinstance(dims, Tuple) and len(dims) == 2:
-                print('At line:', node.lineno,
-                      '|', f"Provided {len(indices)} {'index' if len(indices) == 1 else 'indices'}, 2 required")
+                log_type_error(node.lineno,
+                               f"Provided {len(indices)} {'index' if len(indices) == 1 else 'indices'}, 2 required")
             else:
                 for i in range(2):
                     if indices[i] and dims[i] and (indices[i] < 0 or indices[i] >= dims[i]):
-                        print('At line:', node.lineno, '|',
-                              f"Index {indices[i]} is out of range for matrix {symbol.name} with shape {dims} at axis {i}")
+                        log_type_error(node.lineno,
+                                       f"Index {indices[i]} is out of range for matrix {symbol.name} with shape {dims} at axis {i}")
 
         # vector
         elif symbol_type == Vector_t:
             if len(indices) != 1:
-                print('At line:', node.lineno, '|',
-                      f"Provided {len(indices)} indices for vector {symbol.name}, 1 required")
+                log_type_error(node.lineno, f"Provided {len(indices)} indices for vector {symbol.name}, 1 required")
             elif indices[0] and dims and (indices[0] < 0 or indices[0] >= dims):
-                print('At line:', node.lineno, '|',
-                      f"Index {indices[0]} is out of range for vector with length {dims}")
+                log_type_error(node.lineno, f"Index {indices[0]} is out of range for vector with length {dims}")
 
         else:
-            print('At line:', node.lineno,
-                  '|', f"{symbol.type} is not subscritable")
+            log_type_error(node.lineno, f"{symbol.type} is not subscritable")
 
         return symbol_type, dims
 
@@ -397,14 +379,14 @@ class TypeChecker(NodeVisitor):
             returns list of indices in slice_vector
             if index isn't a constant Integer, then it's of NoneType in the list
         '''
-        indices = [None]*len(node.values)
+        indices = [None] * len(node.values)
         for i, value in enumerate(node.values):
             value_type = self.visit(value)
             if value_type == Integer_t:
                 if isinstance(value, AST.IntNum):
                     indices[i] = value.value
             else:
-                print('At line:', node.lineno,
-                      '|', f"{value_type} cannot be used as an index for a matrix or vector")
+                log_type_error(node.lineno, f"{value_type} cannot be used as an index for a matrix or vector")
 
         return indices
+
