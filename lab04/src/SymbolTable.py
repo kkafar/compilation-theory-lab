@@ -37,9 +37,6 @@ class SymbolTable(object):
     def get(self, name):  # get variable symbol or fundef from <name> entry
         return self.__symbol[name]
 
-    # def get_parent_scope(self):
-    #     return self.parent_scope
-
     def get_tightest_scope_name(self):
         return self.__scope_name_stack[-1]
 
@@ -47,12 +44,10 @@ class SymbolTable(object):
         return ScopeName.WHILE in self.__scope_name_stack or ScopeName.FOR in self.__scope_name_stack
 
     def push_scope(self, name: ScopeName):
-        # print('push_scope', name.name)
         self.__scope_level += 1
         self.__scope_name_stack.append(name)
 
     def pop_scope(self):
-        # print('pop_scope', self.get_tightest_scope_name().name)
         if self.__scope_level == 0:
             raise RuntimeError("Can not decrease scope!")
         self.__scope_name_stack.pop()
