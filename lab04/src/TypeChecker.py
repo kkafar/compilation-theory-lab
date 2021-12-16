@@ -166,7 +166,10 @@ class TypeChecker(NodeVisitor):
             else:
                 log_type_checker_error("BinExpr: Unhandled arithmetic operation?!")
         else:
-            log_type_error(node.lineno, "BinExpr: undefined operand")
+            if type1 is None:
+                log_type_error(node.lineno, f"BinExpr: invalid left operand type: {type1}")
+            if type2 is None:
+                log_type_error(node.lineno, f"BinExpr: invalid right operand type: {type2}")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
         type1 = self.visit(node.left)
@@ -179,6 +182,11 @@ class TypeChecker(NodeVisitor):
                     log_type_error(node.lineno, f'{type1} {type2} not comparable')
             elif type1 not in numeric_types or type2 not in numeric_types:
                 log_type_error(node.lineno, f'{type1} {type2} not comparable')
+        else:
+            if type1 is None:
+                log_type_error(node.lineno, f"RelopExpr: invalid left operand type: {type1}")
+            if type2 is None:
+                log_type_error(node.lineno, f"RelopExpr: invalid right operand type: {type2}")
 
         return Bool_t
 
