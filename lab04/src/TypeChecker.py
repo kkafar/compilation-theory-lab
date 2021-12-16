@@ -144,9 +144,9 @@ class TypeChecker(NodeVisitor):
                         else:
                             return Matrix_t, (dims1[0], dims2[1])
 
-                if type1 == Vector_t or type2 == Vector_t:
+                elif type1 == Vector_t or type2 == Vector_t:
                     if type1 != type2 or op == '/':
-                        log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
+                        log_type_error(node.lineno, f'Types {type1} and {type2} not compatible with {op}')
                     elif dims1 != dims2:
                         log_type_error(node.lineno,
                                        f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
@@ -154,7 +154,7 @@ class TypeChecker(NodeVisitor):
                         return Vector_t, dims1
 
                 elif type1 not in numeric_types or type2 not in numeric_types:
-                    log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
+                    log_type_error(node.lineno, f'Types {type1} and {type2} not compatible with {op}')
                 else:
                     return type_table[op][type1][type2]
 
@@ -276,7 +276,7 @@ class TypeChecker(NodeVisitor):
         if not self.symbol_table.is_in_loop_scope():
             log_type_error(node.lineno, f'Jump statement NOT in loop scope')
 
-        if node.statement not in {'BREAK', 'CONTINUE'}:
+        if node.statement not in {'break', 'continue'}:
             log_type_checker_error(node.lineno, f'Unhandled JumpStatement')
 
         return None
@@ -303,7 +303,7 @@ class TypeChecker(NodeVisitor):
 
         expression_t = self.visit(node.expression)
         if expression_t != Bool_t and expression_t is not None:
-            log_type_error(node.lineno, f'WhileLoop expression must return Bool, not {expression_t}')
+            log_type_error(node.expression.lineno, f'WhileLoop expression must return Bool, not {expression_t}')
 
         if node.instruction is not None:
             self.visit(node.instruction)
@@ -327,9 +327,9 @@ class TypeChecker(NodeVisitor):
             node.variable.name, Integer_t))
 
         if left != Integer_t and left is not None:
-            log_type_error(node.lineno, f"Left range boundary must be of integer type, not {left}")
+            log_type_error(node.range_value_left.lineno, f"Left range boundary must be of Integer type, not {left}")
         if right != Integer_t and right is not None:
-            log_type_error(node.lineno, f"Right range boundary must be of integer type, not {right}")
+            log_type_error(node.range_value_right.lineno, f"Right range boundary must be of Integer type, not {right}")
 
         self.visit(node.instruction)
         self.symbol_table.pop_scope()
