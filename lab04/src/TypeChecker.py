@@ -166,7 +166,7 @@ class TypeChecker(NodeVisitor):
             else:
                 log_type_checker_error("BinExpr: Unhandled arithmetic operation?!")
         else:
-            log_type_checker_error(node.lineno, "BinExpr: type1 or type2 is None")
+            log_type_error(node.lineno, "BinExpr: undefined operand")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
         type1 = self.visit(node.left)
@@ -180,8 +180,6 @@ class TypeChecker(NodeVisitor):
             elif type1 not in numeric_types or type2 not in numeric_types:
                 log_type_error(node.lineno, f'{type1} {type2} not comparable')
 
-        # TODO (@kkafar): Should we cover matrix case?
-
         return Bool_t
 
     def visit_UnaryExpr(self, node):
@@ -194,8 +192,7 @@ class TypeChecker(NodeVisitor):
                 return operand_t
             else:
                 log_type_error(node.lineno, f'Invalid operand type for operator \'-\'')
-
-        if operator == 'TRANSPOSE':
+        elif operator == 'TRANSPOSE':
             if isinstance(operand_t, Tuple) and operand_t[0] == Matrix_t:
                 return Matrix_t, (operand_t[1][1], operand_t[1][0])
             else:
@@ -214,20 +211,15 @@ class TypeChecker(NodeVisitor):
                 self.symbol_table.put(
                     node.left.name, VariableSymbol(node.left.name, right_t))
         elif op in arithmetic_self_assign_ops:
-            # TODO (@kkafar): We need to check here whether type of left side == type of right side
-
             left_t = self.visit(node.left)
-
             if isinstance(node.left, AST.Slice):
                 if right_t not in numeric_types:
                     log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
-
             elif left_t != right_t and left_t is not None:
                 log_type_error(node.lineno, f"Incompatible operands types for '{op}' operator")
 
     def visit_Function(self, node: AST.Function):
         function_name = node.function
-
         arg_types = self.visit(node.arguments)
 
         if len(arg_types) > 2:
@@ -240,8 +232,6 @@ class TypeChecker(NodeVisitor):
             else:
                 dims[i] = node.arguments.expressions[i].value
 
-        # TODO (@kkafar): Consider using Vector_t
-        # All available functions return a matrix
         return Matrix_t, tuple(dims)
 
     def visit_Conditional(self, node: AST.Conditional):
@@ -255,7 +245,6 @@ class TypeChecker(NodeVisitor):
             self.symbol_table.pop_scope()
 
     def visit_Vector(self, node: AST.Vector):
-        # TODO @kkafar: Check if vector data type is checked by scanner
         return Vector_t, len(node.values)
 
     def visit_Matrix(self, node: AST.Matrix):
@@ -274,16 +263,15 @@ class TypeChecker(NodeVisitor):
 
     def visit_JumpStatement(self, node: AST.JumpStatement):
         # break or continue
-        # we need to make sure, we are in while / for scope!
+        # we need to make sure, we are in (while|for) scope!
 
-        # I think we do not have to check it, scanner already does
         if not self.symbol_table.is_in_loop_scope():
             log_type_error(node.lineno, f'Jump statement NOT in loop scope')
 
         if node.statement not in {'BREAK', 'CONTINUE'}:
             log_type_checker_error(node.lineno, f'Unhandled JumpStatement')
 
-        # no return
+        return None
 
     def visit_PrintStatement(self, node: AST.PrintStatement):
         self.visit(node.expressions)
@@ -313,7 +301,7 @@ class TypeChecker(NodeVisitor):
             self.visit(node.instruction)
 
         self.symbol_table.pop_scope()
-        # no return
+        return None
 
     def visit_ForLoop(self, node: AST.ForLoop):
         self.symbol_table.push_scope(ScopeName.FOR)
@@ -327,7 +315,6 @@ class TypeChecker(NodeVisitor):
         left = self.visit(node.range_value_left)
         right = self.visit(node.range_value_right)
 
-        # iterator should be of Integer or Range/Slice type?
         self.symbol_table.put(node.variable.name, VariableSymbol(
             node.variable.name, Integer_t))
 
