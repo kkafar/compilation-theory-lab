@@ -15,6 +15,7 @@ VariableName_t = String_t
 Matrix_t = 'Matrix'
 Vector_t = 'Vector'
 Bool_t = 'Bool'
+Undefined_t = 'Undefined'
 Variable_t = Union[
     Integer_t,
     Float_t,
@@ -114,6 +115,7 @@ class TypeChecker(NodeVisitor):
             return var_t.type
         else:
             log_type_error(node.lineno, f'Reference to undefined variable: {node.name}')
+            return Undefined_t
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
         type1 = self.visit(node.left)
@@ -223,7 +225,7 @@ class TypeChecker(NodeVisitor):
             if isinstance(node.left, AST.Slice):
                 if right_t not in numeric_types:
                     log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
-            elif left_t != right_t and left_t is not None:
+            elif left_t != right_t:
                 log_type_error(node.lineno, f"Incompatible operands types for '{op}' operator")
 
     def visit_Function(self, node: AST.Function):
@@ -235,7 +237,7 @@ class TypeChecker(NodeVisitor):
 
         dims = [None, None]
         for i, arg_type in enumerate(arg_types):
-            if arg_type and arg_type != Integer_t:
+            if arg_type != Integer_t:
                 log_type_error(node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
             else:
                 dims[i] = node.arguments.expressions[i].value
@@ -306,7 +308,7 @@ class TypeChecker(NodeVisitor):
         self.symbol_table.push_scope(ScopeName.WHILE)
 
         expression_t = self.visit(node.expression)
-        if expression_t != Bool_t and expression_t is not None:
+        if expression_t != Bool_t:
             log_type_error(node.expression.lineno, f'WhileLoop expression must return Bool, not {expression_t}')
 
         if node.instruction is not None:
@@ -330,9 +332,9 @@ class TypeChecker(NodeVisitor):
         self.symbol_table.put(node.variable.name, VariableSymbol(
             node.variable.name, Integer_t))
 
-        if left != Integer_t and left is not None:
+        if left != Integer_t:
             log_type_error(node.range_value_left.lineno, f"Left range boundary must be of Integer type, not {left}")
-        if right != Integer_t and right is not None:
+        if right != Integer_t:
             log_type_error(node.range_value_right.lineno, f"Right range boundary must be of Integer type, not {right}")
 
         self.visit(node.instruction)
