@@ -113,7 +113,7 @@ class TypeChecker(NodeVisitor):
         if var_t is not None:
             return var_t.type
         else:
-            log_type_error(node.lineno, f'Undefined variable: {node.name}')
+            log_type_error(node.lineno, f'Reference to undefined variable: {node.name}')
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
         type1 = self.visit(node.left)
