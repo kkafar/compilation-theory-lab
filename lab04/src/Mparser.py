@@ -306,6 +306,8 @@ def p_conditional_statement(p):
     else:
         p[0] = AST.Conditional(p[3], p[5], p[7])
 
+    p[0].lineno = p.lineno(2)
+
 
 def p_jump_statement(p):
     """

@@ -244,7 +244,11 @@ class TypeChecker(NodeVisitor):
 
     def visit_Conditional(self, node: AST.Conditional):
         self.symbol_table.push_scope(ScopeName.IF)
-        self.visit(node.condition)
+
+        condition_type = self.visit(node.condition)
+        if condition_type != Bool_t:
+            log_type_error(node.lineno, f'If condition must return Bool, not {condition_type}')
+
         self.visit(node.if_instruction)
         self.symbol_table.pop_scope()
         if node.else_instruction is not None:

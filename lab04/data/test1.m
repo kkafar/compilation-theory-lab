@@ -27,6 +27,8 @@ while(M) {
 
 break;
 
+if ('abc') print 'hello';
+
 
 A = zeros(3.5);  
 B = ones('a', 2>2); 
