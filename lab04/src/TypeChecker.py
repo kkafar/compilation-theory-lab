@@ -325,11 +325,14 @@ class TypeChecker(NodeVisitor):
 
         self.visit(node.instruction)
         self.symbol_table.pop_scope()
-        # no return
 
     def visit_Slice(self, node: AST.Slice):
         symbol = self.symbol_table.get(node.name)
         indices = self.visit(node.vector)
+
+        if not symbol:
+            log_type_error(node.lineno, f"Reference to undefined variable: {node.name}")
+            return  # handle NullPointerException
 
         # matrix
         if not isinstance(symbol.type, Tuple):
