@@ -6,6 +6,8 @@ from SymbolTable import SymbolTable, ScopeName, VariableSymbol
 # I assume python3.10 notation is not available on lab PC
 from typing import Union, Tuple, Literal
 
+error_flag = False
+
 # Custom types
 # Literals might be of use here or maybe Enums
 Integer_t = 'Integer'
@@ -55,10 +57,14 @@ type_table = {
 
 def log_type_error(line, error_message):
     print(f"At line: {line} | {error_message}.")
+    global error_flag
+    error_flag = True
 
 
 def log_type_checker_error(line, error_message):
     log_type_error(line, "TypeChecker error: " + error_message)
+    global error_flag
+    error_flag = True
 
 
 
