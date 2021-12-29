@@ -16,6 +16,9 @@ class Node(object):
             self.children = [children]
             self.next = []
 
+    def accept(self, visitor):
+        return visitor.visit(self)
+
 
 class Program(Node):
     def __init__(self, instructions=None):
@@ -72,14 +75,6 @@ class UnaryExpr(Node):
         super().__init__()
         self.operator = operator
         self.operand = operand
-
-
-class RelExpr(Node):
-    def __init__(self, op, left, right):
-        super().__init__()
-        self.op = op
-        self.left = left
-        self.right = right
 
 
 class Instructions(Node):

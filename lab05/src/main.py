@@ -26,5 +26,4 @@ if __name__ == '__main__':
         typeChecker.visit(ast)   # or alternatively ast.accept(typeChecker)
         # ast.printTree()
         if not error_flag:
-            print(dir(ast))
             ast.accept(Interpreter())

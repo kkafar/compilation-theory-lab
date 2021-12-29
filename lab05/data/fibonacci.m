@@ -1,4 +1,9 @@
-print 1+1;
+print 2+2, 2 < 3;
+
+while (1 < 2) {
+    print 1;
+    break;
+}
 
 
 # a = 0;
