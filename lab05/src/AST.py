@@ -24,7 +24,7 @@ class Program(Node):
     def __init__(self, instructions=None):
         super().__init__()
         self.instructions = instructions
-    
+
 
 class IntNum(Node):
     def __init__(self, value):
@@ -116,6 +116,7 @@ class Vector(Node):
         else:
             self.values = [value]
 
+
 class Matrix(Node):
     def __init__(self, vector=None):
         super().__init__()
@@ -123,6 +124,7 @@ class Matrix(Node):
             self.vectors = []
         else:
             self.vectors = [vector]
+
 
 class JumpStatement(Node):
     def __init__(self, statement):
@@ -172,6 +174,7 @@ class Slice(Node):
         super().__init__()
         self.name = matrix
         self.vector = vector
+
 
 class SliceVector(Node):
     def __init__(self, values):

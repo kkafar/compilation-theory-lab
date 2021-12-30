@@ -11,9 +11,13 @@ sys.setrecursionlimit(10000)
 
 binop_func = {
     '+': lambda x, y: x+y,
+    '.+': lambda x, y: x+y,
     '-': lambda x, y: x-y,
-    '*': lambda x, y: x*y,
+    '.-': lambda x, y: x-y,
+    '*': lambda x, y: x*y if isinstance(y, int) else x@y,
+    '.*': lambda x, y: x*y,
     '/': lambda x, y: x/y,
+    './': lambda x, y: x/y,
     '>': lambda x, y: x > y,
     '<': lambda x, y: x < y,
     '>=': lambda x, y: x >= y,
@@ -28,12 +32,12 @@ unary_func = {
 }
 
 matrix_func = {
-    'zeros': lambda x: np.zeros(x) if not isinstance(x, tuple) else np.zeros(*x),
-    'ones': lambda x: np.ones(x) if not isinstance(x, tuple) else np.ones(*x),
-    'eye': lambda x: np.eye(x) if not isinstance(x, tuple) else np.eye(*x)
+    'zeros': lambda x: np.zeros(x),
+    'ones': lambda x: np.ones(x),
+    'eye': lambda x: np.eye(*x)
 }
 
-memory_stack = MemoryStack()
+memory_stack = MemoryStack(Memory('global'))
 
 
 class Interpreter(object):
@@ -88,16 +92,21 @@ class Interpreter(object):
 
     @when(AST.Assignment)
     def visit(self, node):
+        value = node.right.accept(self)
         if node.op == '=':
-            value = node.right.accept(self)
             memory_stack.set(node.left.name, value)
         else:
-            raise Exception('unimplemented')
+            old_value = memory_stack.get(node.left.name)
+            new_value = binop_func[node.op[0]](old_value, value)
+            memory_stack.set(node.left.name, new_value)
 
     @when(AST.Function)
     def visit(self, node):
         arguments = node.arguments.accept(self)
-        return matrix_func[node.function](arguments)
+        if len(arguments) == 1:
+            arguments *= 2
+
+        return matrix_func[node.function](tuple(arguments))
 
     @when(AST.Conditional)
     def visit(self, node):
@@ -150,7 +159,6 @@ class Interpreter(object):
 
     @when(AST.ForLoop)
     def visit(self, node):
-
         start_value = node.range_value_left.accept(self)
         end_value = node.range_value_right.accept(self)
         memory_stack.set(node.variable.name, start_value)
@@ -165,7 +173,7 @@ class Interpreter(object):
                 pass
 
             i = node.variable.accept(self) + 1
-            memory_stack.set_(node.variable.name, i)
+            memory_stack.set(node.variable.name, i)
 
     @when(AST.Slice)
     def visit(self, node):
