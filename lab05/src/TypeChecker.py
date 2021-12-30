@@ -67,7 +67,6 @@ def log_type_checker_error(line, error_message):
     error_flag = True
 
 
-
 class NodeVisitor(object):
 
     def visit(self, node: AST.Node) -> VisitReturn_t:
@@ -120,7 +119,8 @@ class TypeChecker(NodeVisitor):
         if var_t is not None:
             return var_t.type
         else:
-            log_type_error(node.lineno, f'Reference to undefined variable: {node.name}')
+            log_type_error(
+                node.lineno, f'Reference to undefined variable: {node.name}')
             return Undefined_t
 
     def visit_BinExpr(self, node: AST.BinExpr) -> numeric_types:
@@ -138,7 +138,8 @@ class TypeChecker(NodeVisitor):
             if op in arithmetic_ops:
                 if type1 == Matrix_t or type2 == Matrix_t:
                     if type1 != type2 or op == '/':
-                        log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
+                        log_type_error(
+                            node.lineno, f'{type1} {type2} not compatible with {op}')
                     elif op in {'+', '-'}:
                         if dims1 != dims2:
                             log_type_error(node.lineno,
@@ -154,7 +155,8 @@ class TypeChecker(NodeVisitor):
 
                 elif type1 == Vector_t or type2 == Vector_t:
                     if type1 != type2 or op == '/':
-                        log_type_error(node.lineno, f'Types {type1} and {type2} not compatible with {op}')
+                        log_type_error(
+                            node.lineno, f'Types {type1} and {type2} not compatible with {op}')
                     elif dims1 != dims2:
                         log_type_error(node.lineno,
                                        f'Cannot use {op} with vectors of different lengths ({dims1} and {dims2})')
@@ -162,22 +164,29 @@ class TypeChecker(NodeVisitor):
                         return Vector_t, dims1
 
                 elif type1 not in numeric_types or type2 not in numeric_types:
-                    log_type_error(node.lineno, f'Types {type1} and {type2} not compatible with {op}')
+                    if not (op == '*' and (type1 == Integer_t and type2 == String_t) or (type1 == String_t and type2 == Integer_t)):
+                        log_type_error(
+                            node.lineno, f'Types {type1} and {type2} not compatible with {op}')
                 else:
                     return type_table[op][type1][type2]
 
             elif op in arithmetic_matrix_ops:
                 if type1 != Matrix_t or type2 != Matrix_t:
-                    log_type_error(node.lineno, f'{type1} {type2} not compatible with {op}')
+                    log_type_error(
+                        node.lineno, f'{type1} {type2} not compatible with {op}')
                 elif dims1 != dims2:
-                    log_type_error(node.lineno, f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
+                    log_type_error(
+                        node.lineno, f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
             else:
-                log_type_checker_error("BinExpr: Unhandled arithmetic operation?!")
+                log_type_checker_error(
+                    "BinExpr: Unhandled arithmetic operation?!")
         else:
             if type1 is None:
-                log_type_error(node.lineno, f"BinExpr: invalid left operand type: {type1}")
+                log_type_error(
+                    node.lineno, f"BinExpr: invalid left operand type: {type1}")
             if type2 is None:
-                log_type_error(node.lineno, f"BinExpr: invalid right operand type: {type2}")
+                log_type_error(
+                    node.lineno, f"BinExpr: invalid right operand type: {type2}")
 
     def visit_RelopExpr(self, node: AST.RelopExpr) -> Bool_t:
         type1 = self.visit(node.left)
@@ -187,14 +196,17 @@ class TypeChecker(NodeVisitor):
         if type1 is not None and type2 is not None:
             if type1 == String_t or type2 == String_t:
                 if type1 != type2:
-                    log_type_error(node.lineno, f'{type1} {type2} not comparable')
+                    log_type_error(
+                        node.lineno, f'{type1} {type2} not comparable')
             elif type1 not in numeric_types or type2 not in numeric_types:
                 log_type_error(node.lineno, f'{type1} {type2} not comparable')
         else:
             if type1 is None:
-                log_type_error(node.lineno, f"RelopExpr: invalid left operand type: {type1}")
+                log_type_error(
+                    node.lineno, f"RelopExpr: invalid left operand type: {type1}")
             if type2 is None:
-                log_type_error(node.lineno, f"RelopExpr: invalid right operand type: {type2}")
+                log_type_error(
+                    node.lineno, f"RelopExpr: invalid right operand type: {type2}")
 
         return Bool_t
 
@@ -207,12 +219,14 @@ class TypeChecker(NodeVisitor):
                 node.value = -node.operand.value
                 return operand_t
             else:
-                log_type_error(node.lineno, f'Invalid operand type for operator \'-\'')
+                log_type_error(
+                    node.lineno, f'Invalid operand type for operator \'-\'')
         elif operator == 'TRANSPOSE':
             if isinstance(operand_t, Tuple) and operand_t[0] == Matrix_t:
                 return Matrix_t, (operand_t[1][1], operand_t[1][0])
             else:
-                log_type_error(node.lineno, f'Invalid operand type for operator \'\'\'')
+                log_type_error(
+                    node.lineno, f'Invalid operand type for operator \'\'\'')
 
     def visit_Assignment(self, node: AST.Assignment):
         op = node.op
@@ -222,7 +236,8 @@ class TypeChecker(NodeVisitor):
             if isinstance(node.left, AST.Slice):
                 left_t = self.visit(node.left)
                 if right_t not in numeric_types:
-                    log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
+                    log_type_error(
+                        node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
             else:
                 self.symbol_table.put(
                     node.left.name, VariableSymbol(node.left.name, right_t))
@@ -230,21 +245,25 @@ class TypeChecker(NodeVisitor):
             left_t = self.visit(node.left)
             if isinstance(node.left, AST.Slice):
                 if right_t not in numeric_types:
-                    log_type_error(node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
+                    log_type_error(
+                        node.lineno, f"Cannot assign {right_t} to a {left_t[0]} cell")
             elif left_t != right_t:
-                log_type_error(node.lineno, f"Incompatible operands types for '{op}' operator")
+                log_type_error(
+                    node.lineno, f"Incompatible operands types for '{op}' operator")
 
     def visit_Function(self, node: AST.Function):
         function_name = node.function
         arg_types = self.visit(node.arguments)
 
         if len(arg_types) > 2:
-            log_type_error(node.lineno, f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
+            log_type_error(
+                node.lineno, f"Wrong number of arguments, expected 1 or 2, got {len(arg_types)}")
 
         dims = [None, None]
         for i, arg_type in enumerate(arg_types):
             if arg_type != Integer_t:
-                log_type_error(node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
+                log_type_error(
+                    node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
             else:
                 dims[i] = node.arguments.expressions[i].value
 
@@ -255,7 +274,8 @@ class TypeChecker(NodeVisitor):
 
         condition_type = self.visit(node.condition)
         if condition_type != Bool_t:
-            log_type_error(node.lineno, f'If condition must return Bool, not {condition_type}')
+            log_type_error(
+                node.lineno, f'If condition must return Bool, not {condition_type}')
 
         self.visit(node.if_instruction)
         self.symbol_table.pop_scope()
@@ -276,7 +296,8 @@ class TypeChecker(NodeVisitor):
             if y_dim is None:
                 y_dim = vector_len
             elif y_dim != vector_len:
-                log_type_error(node.lineno, f"Matrix initialized with vectors of different lengths")
+                log_type_error(
+                    node.lineno, f"Matrix initialized with vectors of different lengths")
                 return Matrix_t, (x_dim, None)
 
         return Matrix_t, (x_dim, y_dim)
@@ -315,7 +336,8 @@ class TypeChecker(NodeVisitor):
 
         expression_t = self.visit(node.expression)
         if expression_t != Bool_t:
-            log_type_error(node.expression.lineno, f'WhileLoop expression must return Bool, not {expression_t}')
+            log_type_error(node.expression.lineno,
+                           f'WhileLoop expression must return Bool, not {expression_t}')
 
         if node.instruction is not None:
             self.visit(node.instruction)
@@ -329,29 +351,30 @@ class TypeChecker(NodeVisitor):
         # we do not check for name shadowing
         # iterator = self.visit(node.variable)
 
-        # these two below should be of Integer type
-        # & we need to check for it, because if they were passed as ID
-        # scanner did not verify their type
-        left = self.visit(node.range_value_left)
-        right = self.visit(node.range_value_right)
-
         self.symbol_table.put(node.variable.name, VariableSymbol(
             node.variable.name, Integer_t))
 
-        if left != Integer_t:
-            log_type_error(node.range_value_left.lineno, f"Left range boundary must be of Integer type, not {left}")
-        if right != Integer_t:
-            log_type_error(node.range_value_right.lineno, f"Right range boundary must be of Integer type, not {right}")
-
         self.visit(node.instruction)
         self.symbol_table.pop_scope()
+
+    def visit_Range(self, node: AST.ForLoop):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+
+        if left != Integer_t:
+            log_type_error(
+                node.lineno, f"Left range boundary must be of Integer type, not {left}")
+        if right != Integer_t:
+            log_type_error(
+                node.lineno, f"Right range boundary must be of Integer type, not {right}")
 
     def visit_Slice(self, node: AST.Slice):
         symbol = self.symbol_table.get(node.name)
         indices = self.visit(node.vector)
 
         if not symbol:
-            log_type_error(node.lineno, f"Reference to undefined variable: {node.name}")
+            log_type_error(
+                node.lineno, f"Reference to undefined variable: {node.name}")
             return  # handle NullPointerException
 
         # matrix
@@ -375,9 +398,11 @@ class TypeChecker(NodeVisitor):
         # vector
         elif symbol_type == Vector_t:
             if len(indices) != 1:
-                log_type_error(node.lineno, f"Provided {len(indices)} indices for vector {symbol.name}, 1 required")
+                log_type_error(
+                    node.lineno, f"Provided {len(indices)} indices for vector {symbol.name}, 1 required")
             elif indices[0] and dims and (indices[0] < 0 or indices[0] >= dims):
-                log_type_error(node.lineno, f"Index {indices[0]} is out of range for vector with length {dims}")
+                log_type_error(
+                    node.lineno, f"Index {indices[0]} is out of range for vector with length {dims}")
 
         else:
             log_type_error(node.lineno, f"{symbol.type} is not subscritable")
@@ -397,9 +422,9 @@ class TypeChecker(NodeVisitor):
                     indices[i] = value.value
                 elif isinstance(value, AST.UnaryExpr):
                     indices[i] = value.value
-                    
+
             else:
-                log_type_error(node.lineno, f"{value_type} cannot be used as an index for a matrix or vector")
+                log_type_error(
+                    node.lineno, f"{value_type} cannot be used as an index for a matrix or vector")
 
         return indices
-

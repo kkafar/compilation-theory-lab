@@ -161,12 +161,18 @@ class WhileLoop(Node):
 
 
 class ForLoop(Node):
-    def __init__(self, variable, range_value_left, range_value_right, instruction):
+    def __init__(self, variable, range, instruction):
         super().__init__()
         self.variable = variable
-        self.range_value_left = range_value_left
-        self.range_value_right = range_value_right
+        self.range = range
         self.instruction = instruction
+
+
+class Range(Node):
+    def __init__(self, left, right):
+        super().__init__()
+        self.left = left
+        self.right = right
 
 
 class Slice(Node):

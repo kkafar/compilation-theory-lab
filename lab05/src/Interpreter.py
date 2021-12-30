@@ -167,8 +167,7 @@ class Interpreter(object):
 
     @when(AST.ForLoop)
     def visit(self, node):
-        start_value = node.range_value_left.accept(self)
-        end_value = node.range_value_right.accept(self)
+        start_value, end_value = node.range.accept(self)
         memory_stack.set(node.variable.name, start_value)
 
         i = start_value
@@ -182,6 +181,10 @@ class Interpreter(object):
 
             i = node.variable.accept(self) + 1
             memory_stack.set(node.variable.name, i)
+
+    @when(AST.Range)
+    def visit(self, node):
+        return node.left.accept(self), node.right.accept(self)
 
     @when(AST.Slice)
     def visit(self, node):

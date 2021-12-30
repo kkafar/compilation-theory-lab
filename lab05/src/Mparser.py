@@ -377,25 +377,17 @@ def p_while_loop(p):
 
 def p_for_loop(p):
     """
-        for_loop : FOR ID '=' range_value ':' range_value instruction
+        for_loop : FOR ID '=' range instruction
     """
-    p[0] = AST.ForLoop(AST.Variable(p[2]), p[4], p[6], p[7])
+    p[0] = AST.ForLoop(AST.Variable(p[2]), p[4], p[5])
 
 
-def p_range_value_int(p):
+def p_range(p):
     """
-        range_value : DT_INTEGER                   
+        range : expression ':' expression
     """
-    p[0] = AST.IntNum(p[1])
-    p[0].lineno = p.lineno(1)
-
-
-def p_range_value_id(p):
-    """
-        range_value : ID                   
-    """
-    p[0] = AST.Variable(p[1])
-    p[0].lineno = p.lineno(1)
+    p[0] = AST.Range(p[1], p[3])
+    p[0].lineno = p.lineno(2)
 
 
 parser = yacc.yacc()
