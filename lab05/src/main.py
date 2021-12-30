@@ -9,7 +9,7 @@ from Interpreter import Interpreter
 if __name__ == '__main__':
 
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "data/fibonacci.m"
+        filename = f"data/{sys.argv[1]}.m" if len(sys.argv) > 1 else "data/fibonacci.m"
         with open(filename) as file:
             text = file.read()
     except IOError:

@@ -94,11 +94,19 @@ class Interpreter(object):
     def visit(self, node):
         value = node.right.accept(self)
         if node.op == '=':
-            memory_stack.set(node.left.name, value)
+            if isinstance(node.left, AST.Slice):
+                slice_ = node.left.accept(self)
+                slice_[:] = node.right.accept(self)
+            else:
+                memory_stack.set(node.left.name, value)
         else:
-            old_value = memory_stack.get(node.left.name)
-            new_value = binop_func[node.op[0]](old_value, value)
-            memory_stack.set(node.left.name, new_value)
+            if isinstance(node.left, AST.Slice):
+                slice_ = node.left.accept(self)
+                slice_[:] = binop_func[node.op[0]](slice_, value)
+            else:
+                old_value = memory_stack.get(node.left.name)
+                new_value = binop_func[node.op[0]](old_value, value)
+                memory_stack.set(node.left.name, new_value)
 
     @when(AST.Function)
     def visit(self, node):
@@ -137,7 +145,8 @@ class Interpreter(object):
 
     @when(AST.ReturnStatement)
     def visit(self, node):
-        sys.exit()  # ?
+        print(node.expression.accept(self))
+        sys.exit() #!
 
     @when(AST.Expressions)
     def visit(self, node):
@@ -146,7 +155,6 @@ class Interpreter(object):
             evals.append(expression.accept(self))
         return evals
 
-    # simplistic while loop interpretation
     @when(AST.WhileLoop)
     def visit(self, node):
         while node.expression.accept(self):
@@ -166,7 +174,7 @@ class Interpreter(object):
         i = start_value
         while i <= end_value:
             try:
-                r = node.instruction.accept(self)
+                node.instruction.accept(self)
             except BreakException:
                 break
             except ContinueException:
@@ -181,12 +189,13 @@ class Interpreter(object):
         matrix = memory_stack.get(node.name)
 
         if len(indices) == 1:
-            return matrix[indices[0]]
+            return matrix[indices[0]:indices[0]+1]
         else:
-            return matrix[indices[0], indices[1]]
+            return matrix[indices[0]:indices[0]+1, indices[1]:indices[1]+1]
 
     @when(AST.SliceVector)
     def visit(self, node):
         values = []
         for value in node.values:
             values.append(value.accept(self))
+        return values
