@@ -18,6 +18,7 @@ Matrix_t = 'Matrix'
 Vector_t = 'Vector'
 Bool_t = 'Bool'
 Range_t = 'Range'
+Slice_t = 'Slice'
 Undefined_t = None
 Variable_t = Union[
     Integer_t,
@@ -168,7 +169,7 @@ class TypeChecker(NodeVisitor):
                         return Vector_t, dims1
 
                 elif type1 not in numeric_types or type2 not in numeric_types:
-                    if not (op == '*' and (type1 == Integer_t and type2 == String_t) or (type1 == String_t and type2 == Integer_t)):
+                    if not (op == '*' and (type1 == Integer_t and type2 == String_t) or (type1 == String_t and type2 == Integer_t) or type1 == Slice_t or type2 == Slice_t):
                         log_type_error(
                             node.lineno, f'Types {type1} and {type2} not compatible with {op}')
                 else:
@@ -202,9 +203,9 @@ class TypeChecker(NodeVisitor):
                 if type1 != type2:
                     log_type_error(
                         node.lineno, f'{type1} {type2} not comparable')
-            elif isinstance(type1, tuple) and type2 in numeric_types:
+            elif (isinstance(type1, tuple) or type1 == Slice_t) and type2 in numeric_types:
                 pass
-            elif isinstance(type2, tuple) and type1 in numeric_types:
+            elif (isinstance(type2, tuple) or type2 == Slice_t) and type1 in numeric_types:
                 pass
             elif isinstance(type1, tuple) and isinstance(type2, tuple) and type1[0] == type2[0]:
                 if type1[1] != type2[1]:
@@ -227,10 +228,10 @@ class TypeChecker(NodeVisitor):
         operand_t = self.visit(node.operand)
 
         if operator == '-':
+            if isinstance(operand_t, tuple) or operand_t == Slice_t:
+                return operand_t
             if operand_t in numeric_types:
                 node.value = -node.operand.value
-                return operand_t
-            if isinstance(operand_t, tuple):
                 return operand_t
             else:
                 log_type_error(
@@ -426,7 +427,7 @@ class TypeChecker(NodeVisitor):
         else:
             log_type_error(node.lineno, f"{symbol.type} is not subscritable")
 
-        return symbol_type, dims
+        return Slice_t
 
     def visit_SliceVector(self, node: AST.SliceVector):
         '''
@@ -443,7 +444,7 @@ class TypeChecker(NodeVisitor):
                 elif isinstance(value, AST.UnaryExpr):
                     indices[i] = value.value
 
-            elif value_type == Range_t:
+            elif value_type == Range_t or value_type == Slice_t:
                 pass
             else:
                 log_type_error(
