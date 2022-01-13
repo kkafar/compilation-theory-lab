@@ -141,7 +141,23 @@ def p_slice_vector(p):
         slice_vector : '[' expression_list ']'
     '''
     p[0] = AST.SliceVector(p[2].expressions)
-    p[0].lineno = p.lineno(2)
+    p[0].lineno = p.lineno(1)
+
+
+def p_slice_vector2(p):
+    '''
+        slice_vector : '[' range ']'
+    '''
+    p[0] = AST.SliceVector([p[2]])
+    p[0].lineno = p.lineno(1)
+
+
+def p_slice_vector3(p):
+    '''
+        slice_vector : '[' range ',' range ']'
+    '''
+    p[0] = AST.SliceVector([p[2], p[4]])
+    p[0].lineno = p.lineno(1)
 
 
 def p_expression(p):

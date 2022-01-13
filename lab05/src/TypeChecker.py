@@ -17,6 +17,7 @@ VariableName_t = String_t
 Matrix_t = 'Matrix'
 Vector_t = 'Vector'
 Bool_t = 'Bool'
+Range_t = 'Range'
 Undefined_t = None
 Variable_t = Union[
     Integer_t,
@@ -368,6 +369,8 @@ class TypeChecker(NodeVisitor):
             log_type_error(
                 node.lineno, f"Right range boundary must be of Integer type, not {right}")
 
+        return Range_t
+
     def visit_Slice(self, node: AST.Slice):
         symbol = self.symbol_table.get(node.name)
         indices = self.visit(node.vector)
@@ -414,6 +417,7 @@ class TypeChecker(NodeVisitor):
             returns list of indices in slice_vector
             if index isn't a constant Integer, then it's of NoneType in the list
         '''
+
         indices = [None] * len(node.values)
         for i, value in enumerate(node.values):
             value_type = self.visit(value)
@@ -423,6 +427,8 @@ class TypeChecker(NodeVisitor):
                 elif isinstance(value, AST.UnaryExpr):
                     indices[i] = value.value
 
+            elif value_type == Range_t:
+                    pass
             else:
                 log_type_error(
                     node.lineno, f"{value_type} cannot be used as an index for a matrix or vector")

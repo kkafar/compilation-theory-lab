@@ -192,8 +192,12 @@ class Interpreter(object):
         matrix = memory_stack.get(node.name)
 
         if len(indices) == 1:
-            return matrix[indices[0]:indices[0]+1]
+            if isinstance(indices[0], tuple):
+                return matrix[indices[0][0]:indices[0][1]]
+            return matrix[indices[0]:indices[0]+1][0]
         else:
+            if isinstance(indices[0], tuple):
+                return matrix[indices[0][0]:indices[0][1], indices[1][0]:indices[1][1]]
             return matrix[indices[0]:indices[0]+1, indices[1]:indices[1]+1]
 
     @when(AST.SliceVector)

@@ -183,7 +183,7 @@ class Slice(Node):
 
 
 class SliceVector(Node):
-    def __init__(self, values):
+    def __init__(self, values=None, range=None):
         super().__init__()
         self.values = values
 
