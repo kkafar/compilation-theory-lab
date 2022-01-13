@@ -265,7 +265,7 @@ class TypeChecker(NodeVisitor):
             if arg_type != Integer_t:
                 log_type_error(
                     node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
-            else:
+            elif isinstance(node.arguments.expressions[i], AST.IntNum):
                 dims[i] = node.arguments.expressions[i].value
 
         return Matrix_t, tuple(dims)
