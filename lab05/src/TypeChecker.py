@@ -428,7 +428,7 @@ class TypeChecker(NodeVisitor):
                     indices[i] = value.value
 
             elif value_type == Range_t:
-                    pass
+                pass
             else:
                 log_type_error(
                     node.lineno, f"{value_type} cannot be used as an index for a matrix or vector")

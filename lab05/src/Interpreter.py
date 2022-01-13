@@ -93,16 +93,21 @@ class Interpreter(object):
     @when(AST.Assignment)
     def visit(self, node):
         value = node.right.accept(self)
+
         if node.op == '=':
             if isinstance(node.left, AST.Slice):
+                node.left.assignable = True
                 slice_ = node.left.accept(self)
-                slice_[:] = node.right.accept(self)
+                slice_[:] = value
+                node.left.assignable = False
             else:
                 memory_stack.set(node.left.name, value)
         else:
             if isinstance(node.left, AST.Slice):
+                node.left.assignable = True
                 slice_ = node.left.accept(self)
                 slice_[:] = binop_func[node.op[0]](slice_, value)
+                node.left.assignable = False
             else:
                 old_value = memory_stack.get(node.left.name)
                 new_value = binop_func[node.op[0]](old_value, value)
@@ -194,11 +199,16 @@ class Interpreter(object):
         if len(indices) == 1:
             if isinstance(indices[0], tuple):
                 return matrix[indices[0][0]:indices[0][1]]
-            return matrix[indices[0]:indices[0]+1][0]
+            if node.assignable:
+                return matrix[indices[0]:indices[0]+1]
+            return matrix[indices[0]]
         else:
             if isinstance(indices[0], tuple):
                 return matrix[indices[0][0]:indices[0][1], indices[1][0]:indices[1][1]]
-            return matrix[indices[0]:indices[0]+1, indices[1]:indices[1]+1]
+            if node.assignable:
+                return matrix[indices[0]:indices[0]+1, indices[1]:indices[1]+1]
+            return matrix[indices[0], indices[1]]
+
 
     @when(AST.SliceVector)
     def visit(self, node):

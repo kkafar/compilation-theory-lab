@@ -180,6 +180,7 @@ class Slice(Node):
         super().__init__()
         self.name = matrix
         self.vector = vector
+        self.assignable = False
 
 
 class SliceVector(Node):
