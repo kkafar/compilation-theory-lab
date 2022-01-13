@@ -77,6 +77,8 @@ class NodeVisitor(object):
 
     # Called if no explicit visitor function exists for a node.
     def generic_visit(self, node):
+        if node is None:
+            return
         if isinstance(node, list):
             for elem in node:
                 self.visit(elem)
@@ -139,8 +141,9 @@ class TypeChecker(NodeVisitor):
             if op in arithmetic_ops:
                 if type1 == Matrix_t or type2 == Matrix_t:
                     if type1 != type2 or op == '/':
-                        log_type_error(
-                            node.lineno, f'{type1} {type2} not compatible with {op}')
+                        if type1 not in numeric_types and type2 not in numeric_types:
+                            log_type_error(
+                                node.lineno, f'{type1} {type2} not compatible with {op}')
                     elif op in {'+', '-'}:
                         if dims1 != dims2:
                             log_type_error(node.lineno,
@@ -199,6 +202,14 @@ class TypeChecker(NodeVisitor):
                 if type1 != type2:
                     log_type_error(
                         node.lineno, f'{type1} {type2} not comparable')
+            elif isinstance(type1, tuple) and type2 in numeric_types:
+                pass
+            elif isinstance(type2, tuple) and type1 in numeric_types:
+                pass
+            elif isinstance(type1, tuple) and isinstance(type2, tuple) and type1[0] == type2[0]:
+                if type1[1] != type2[1]:
+                    log_type_error(
+                        node.lineno, f'{type1} {type2} not comparable (noncompatible dimensions)')
             elif type1 not in numeric_types or type2 not in numeric_types:
                 log_type_error(node.lineno, f'{type1} {type2} not comparable')
         else:
@@ -218,6 +229,8 @@ class TypeChecker(NodeVisitor):
         if operator == '-':
             if operand_t in numeric_types:
                 node.value = -node.operand.value
+                return operand_t
+            if isinstance(operand_t, tuple):
                 return operand_t
             else:
                 log_type_error(
@@ -267,6 +280,9 @@ class TypeChecker(NodeVisitor):
                     node.lineno, f"Argument #{i} must be Integer, not {arg_type}")
             elif isinstance(node.arguments.expressions[i], AST.IntNum):
                 dims[i] = node.arguments.expressions[i].value
+
+        if dims[1] is None and dims[0] is not None:
+            dims[1] = dims[0]
 
         return Matrix_t, tuple(dims)
 

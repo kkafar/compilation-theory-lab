@@ -48,7 +48,8 @@ class Interpreter(object):
 
     @when(AST.Program)
     def visit(self, node):
-        node.instructions.accept(self)
+        if node.instructions:
+            node.instructions.accept(self)
 
     @when(AST.IntNum)
     def visit(self, node):
@@ -82,8 +83,8 @@ class Interpreter(object):
 
     @when(AST.UnaryExpr)
     def visit(self, node):
-        operator = node.operator.accept(self)
-        return unary_func[node.operand](operator)
+        operand = node.operand.accept(self)
+        return unary_func[node.operator](operand)
 
     @when(AST.Instructions)
     def visit(self, node):

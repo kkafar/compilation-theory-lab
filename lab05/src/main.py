@@ -3,7 +3,7 @@ import sys
 import Mparser
 import scanner
 from TreePrinter import TreePrinter
-from TypeChecker import TypeChecker, error_flag
+from TypeChecker import TypeChecker
 from Interpreter import Interpreter
 
 if __name__ == '__main__':
@@ -25,5 +25,6 @@ if __name__ == '__main__':
         typeChecker = TypeChecker()
         typeChecker.visit(ast)   # or alternatively ast.accept(typeChecker)
         # ast.printTree()
+        from TypeChecker import error_flag
         if not error_flag:
             ast.accept(Interpreter())

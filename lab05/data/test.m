@@ -29,3 +29,10 @@ A = ones(n);
 for i = 1:n {
     print A[1-1:i, 0:i];
 }
+
+print A[0, 0] == 1;
+print v[1] == 5;
+
+print [[1, 1], [1,2]] > ones(2);
+
+print A[0, 0] + 2;
