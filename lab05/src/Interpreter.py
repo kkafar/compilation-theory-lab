@@ -210,6 +210,7 @@ class Interpreter(object):
         if len(indices) == 1:
             if isinstance(indices[0], tuple) and isinstance(indices[0][0], int) and isinstance(indices[0][1], int):
                 return matrix[int(indices[0][0]):int(indices[0][1])]
+                # xd
             elif node.assignable and isinstance(indices[0], int):
                 return matrix[int(indices[0]):int(indices[0]+1)]
             elif isinstance(indices[0], int):
