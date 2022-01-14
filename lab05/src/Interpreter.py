@@ -210,16 +210,16 @@ class Interpreter(object):
 
         if len(indices) == 1:
             if isinstance(indices[0], tuple):
-                return matrix[indices[0][0]:indices[0][1]]
+                return matrix[int(indices[0][0]):int(indices[0][1])]
             if node.assignable:
-                return matrix[indices[0]:indices[0]+1]
-            return matrix[indices[0]]
+                return matrix[int(indices[0]):int(indices[0]+1)]
+            return matrix[int(indices[0])]
         else:
             if isinstance(indices[0], tuple):
-                return matrix[indices[0][0]:indices[0][1], indices[1][0]:indices[1][1]]
+                return matrix[int(indices[0][0]):int(indices[0][1]), int(indices[1][0]):int(indices[1][1])]
             if node.assignable:
-                return matrix[indices[0]:indices[0]+1, indices[1]:indices[1]+1]
-            return matrix[indices[0], indices[1]]
+                return matrix[int(indices[0]):int(indices[0]+1), int(indices[1]):int(indices[1]+1)]
+            return matrix[int(indices[0]), int(indices[1])]
 
 
     @when(AST.SliceVector)
