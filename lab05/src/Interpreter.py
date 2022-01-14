@@ -124,10 +124,12 @@ class Interpreter(object):
 
     @when(AST.Conditional)
     def visit(self, node):
+        memory_stack.push(Memory("if"))
         if node.condition.accept(self):
             node.if_instruction.accept(self)
         elif node.else_instruction is not None:
             node.else_instruction.accept(self)
+        memory_stack.pop()
 
     @when(AST.Vector)
     def visit(self, node):
