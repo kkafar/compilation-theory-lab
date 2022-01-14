@@ -24,3 +24,7 @@ lab*/*.md
 
 # direnv
 .envrc
+
+# local test files
+*.local.*
+

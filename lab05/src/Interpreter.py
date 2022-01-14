@@ -1,4 +1,3 @@
-
 import AST
 import SymbolTable
 from Memory import *
