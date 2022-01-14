@@ -163,6 +163,8 @@ class Interpreter(object):
 
     @when(AST.WhileLoop)
     def visit(self, node):
+        memory_stack.push(Memory("while"))
+
         while node.expression.accept(self):
             try:
                 node.instruction.accept(self)
@@ -170,9 +172,14 @@ class Interpreter(object):
                 break
             except ContinueException:
                 continue
+        
+        memory_stack.pop()
+        
 
     @when(AST.ForLoop)
     def visit(self, node):
+        memory_stack.push(Memory("for"))
+
         start_value, end_value = node.range.accept(self)
         memory_stack.set(node.variable.name, start_value)
 
@@ -187,6 +194,8 @@ class Interpreter(object):
 
             i = node.variable.accept(self) + 1
             memory_stack.set(node.variable.name, i)
+    
+        memory_stack.pop()
 
     @when(AST.Range)
     def visit(self, node):
