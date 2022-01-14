@@ -208,18 +208,23 @@ class Interpreter(object):
         matrix = memory_stack.get(node.name)
 
         if len(indices) == 1:
-            if isinstance(indices[0], tuple):
+            if isinstance(indices[0], tuple) and isinstance(indices[0][0], int) and isinstance(indices[0][1], int):
                 return matrix[int(indices[0][0]):int(indices[0][1])]
-            if node.assignable:
+            elif node.assignable and isinstance(indices[0], int):
                 return matrix[int(indices[0]):int(indices[0]+1)]
-            return matrix[int(indices[0])]
+            elif isinstance(indices[0], int):
+                return matrix[int(indices[0])]
+            else:
+                raise RuntimeError(f"{node.lineno}: Invalid indices type!")
         else:
-            if isinstance(indices[0], tuple):
+            if isinstance(indices[0], tuple) and isinstance(indices[0][0], int) and isinstance(indices[0][1], int) and isinstance(indices[1][0], int) and isinstance(indices[1][1], int):
                 return matrix[int(indices[0][0]):int(indices[0][1]), int(indices[1][0]):int(indices[1][1])]
-            if node.assignable:
+            elif node.assignable and isinstance(indices[0], int) and isinstance(indices[1], int):
                 return matrix[int(indices[0]):int(indices[0]+1), int(indices[1]):int(indices[1]+1)]
-            return matrix[int(indices[0]), int(indices[1])]
-
+            elif isinstance(indices[0], int) and isinstance(indices[1], int): 
+                return matrix[int(indices[0]), int(indices[1])]
+            else:
+                raise RuntimeError(f"{node.lineno}: Invalid indices type!")
 
     @when(AST.SliceVector)
     def visit(self, node):
