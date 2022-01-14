@@ -184,7 +184,7 @@ class TypeChecker(NodeVisitor):
                         node.lineno, f'Cannot use {op} with matrices of different shapes ({dims1} and {dims2})')
             else:
                 log_type_checker_error(
-                    "BinExpr: Unhandled arithmetic operation?!")
+                    f"BinExpr: Unknown binary operator: '{op}'!")
         else:
             if type1 is None:
                 log_type_error(
@@ -230,7 +230,7 @@ class TypeChecker(NodeVisitor):
         if operator == '-':
             if isinstance(operand_t, tuple) or operand_t == Slice_t:
                 return operand_t
-            if operand_t in numeric_types:
+            elif operand_t in numeric_types:
                 node.value = -node.operand.value
                 return operand_t
             else:
@@ -242,6 +242,8 @@ class TypeChecker(NodeVisitor):
             else:
                 log_type_error(
                     node.lineno, f'Invalid operand type for operator \'\'\'')
+        else:
+            log_type_checker_error(node.lineno, "UnaryExpr: Unhandled case!")
 
     def visit_Assignment(self, node: AST.Assignment):
         op = node.op
@@ -265,6 +267,8 @@ class TypeChecker(NodeVisitor):
             elif left_t != right_t:
                 log_type_error(
                     node.lineno, f"Incompatible operands types for '{op}' operator")
+        else:
+            log_type_checker_error(node.lineno, f"Assignment: Unknown operator: '{op}'.")
 
     def visit_Function(self, node: AST.Function):
         function_name = node.function

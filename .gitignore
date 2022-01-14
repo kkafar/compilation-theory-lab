@@ -26,5 +26,4 @@ lab*/*.md
 .envrc
 
 # local test files
-*.local.*
-
+*local.*
