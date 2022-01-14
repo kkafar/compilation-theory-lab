@@ -8,3 +8,11 @@ D[0, 0] = 42;
 D[1:3, 2:4] = 7;
 print D;
 print D[0, 0];
+
+E = D + 1;
+print E;
+
+V = [1, 2, 3];
+
+print V[0];
+print V[1:2];
